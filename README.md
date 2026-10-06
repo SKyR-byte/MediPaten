@@ -40,4 +40,3 @@ Z. B. kostenlos mit **GitHub Pages** (Repository → Settings → Pages → Bran
 ## Vor dem Livegang
 
 - `impressum.html` und `datenschutz.html` ausfüllen (in Deutschland Pflicht).
-- Link „Mehr über die Children Cancer Foundation“ in `index.html` prüfen (aktuell `https://www.childrencancer.eu`).
