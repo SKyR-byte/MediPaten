@@ -127,7 +127,7 @@
 
   /* ---------- Kontaktformular: Absenden ---------- */
   var cfg = window.MEDIPATEN_CONFIG || {};
-  var LABELS = { name: "Name", email: "E-Mail", semester: "Semester", studiengang: "Studiengang", stadt: "Stadt", uni_klinik: "Uni / Klinik", nachricht: "Nachricht" };
+  var LABELS = { name: "Name", email: "E-Mail", semester: "Semester", studiengang: "Studiengang", taetigkeit: "Studiengang/Beruf", bereich: "Bereich", stadt: "Stadt", uni_klinik: "Uni / Klinik", nachricht: "Nachricht" };
 
   function escapeHtml(s) {
     return s.replace(/[&<>"']/g, function (c) {

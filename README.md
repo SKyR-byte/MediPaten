@@ -33,9 +33,10 @@ Die Seite ist statisch, deshalb übernimmt ein kostenloser Formular-Dienst den M
 1. `FORM_ENDPOINT: "https://formsubmit.co/ajax/eure@email.de"` eintragen.
 2. Einmal das Formular selbst absenden → FormSubmit schickt eine Bestätigungsmail, Link anklicken. Ab dann kommt jede Anmeldung per Mail.
 
-Das Kontaktformular hat zwei Reiter, beide schicken an dieselbe Formspree-Adresse:
+Das Kontaktformular hat drei Reiter, alle schicken an dieselbe Formspree-Adresse:
 
 - **Pat:in werden** – Betreff „Neue MEDIPATEN-Anmeldung: Name“; enthält Name, E-Mail, Fachsemester, Studiengang, optionale Nachricht.
+- **Mitwirken** (auch ohne Medizinstudium) – Betreff „Neue Anfrage zum Mitwirken bei MEDIPATEN: Name“; enthält Name, E-Mail, Studiengang/Beruf, optional Bereich, Ideen.
 - **Dein Standort fehlt?** – Betreff „Idee für einen neuen MEDIPATEN-Standort: Name“; enthält Name, E-Mail, Stadt, optional Uni/Klinik, Ideen und Anregungen.
 
 Das Feld „anliegen“ in jeder Mail zeigt, aus welchem Reiter sie kommt.
