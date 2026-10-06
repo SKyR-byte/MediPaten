@@ -11,6 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Lexend:wght@300;400;500;600;700&family=Titan+One&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <script>document.documentElement.classList.remove("no-js");</script>
 </head>
 <body>
 
@@ -147,6 +148,9 @@
           <path class="heart heart-3" d="M388 176 l12 12 l12 -12 a7 7 0 0 0 -12 -6 a7 7 0 0 0 -12 6z"/>
         </g>
       </svg>
+      <script>/* Startposition sofort setzen, damit nichts aufblitzt */
+        if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) document.getElementById("scene").classList.add("armed");
+      </script>
       <button class="replay" id="replay" type="button" aria-label="Animation erneut abspielen">↻ nochmal</button>
     </div>
   </div>
@@ -460,7 +464,6 @@
   <p class="copy">© <span id="year">2026</span> MEDIPATEN · Universität Witten/Herdecke</p>
 </footer>
 
-<script>document.documentElement.classList.remove("no-js");</script>
 <script src="config.js"></script>
 <script src="script.js"></script>
 </body>

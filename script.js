@@ -73,22 +73,27 @@
     replay.classList.remove("show");
     setTimeout(function () { replay.classList.add("show"); }, 4300);
   }
-  if (scene) {
-    if (reduceMotion) {
-      scene.classList.add("final");
-    } else if (hasIO) {
-      var played = false;
+  if (scene && !reduceMotion) {
+    // Ohne JavaScript oder bei reduzierter Bewegung bleibt das fertige Bild stehen.
+    scene.classList.add("armed");
+    var played = false;
+    var start = function () {
+      if (played) return;
+      played = true;
+      setTimeout(play, 300);
+    };
+    if (hasIO) {
       new IntersectionObserver(function (entries, obs) {
-        if (entries[0].isIntersecting && !played) {
-          played = true;
-          setTimeout(play, 350);
-          obs.disconnect();
-        }
-      }, { threshold: 0.4 }).observe(scene);
+        if (entries[0].isIntersecting) { start(); obs.disconnect(); }
+      }, { threshold: 0.25 }).observe(scene);
+      // Sicherheitsnetz, falls der Beobachter in einer Vorschau nie meldet
+      setTimeout(start, 6000);
     } else {
-      play();
+      start();
     }
     replay.addEventListener("click", play);
+  } else if (replay) {
+    replay.hidden = true;
   }
 
   /* ---------- Anmeldeformular ---------- */

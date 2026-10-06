@@ -175,7 +175,7 @@ p { margin: 0 0 1em; }
 .beanie { fill: var(--pink); }
 .beanie-band { fill: var(--magenta); }
 .beanie-pom { fill: var(--sun); }
-.heart { fill: var(--pink); opacity: 0; transform-box: fill-box; transform-origin: center; }
+.heart { fill: var(--pink); transform-box: fill-box; transform-origin: center; }
 .heart-3 { fill: var(--coral); }
 .sparkles circle { animation: twinkle 3s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
 .sparkles circle:nth-child(2) { animation-delay: .8s; }
@@ -183,9 +183,20 @@ p { margin: 0 0 1em; }
 .sparkles circle:nth-child(4) { animation-delay: 2.2s; }
 @keyframes twinkle { 0%, 100% { opacity: .3; transform: scale(.7); } 50% { opacity: 1; transform: scale(1.2); } }
 
-/* start state: walkers wait outside the stage */
-.walker-left  { transform: translateX(-560px); }
-.walker-right { transform: translateX(560px); }
+/* Default = final pose, so the scene is complete even without JavaScript
+   (e.g. file previews on phones) or with reduced motion. */
+.scene g { transform-box: view-box; }
+.arm-reach-left  { transform: rotate(-23.7deg); }
+.arm-reach-right { transform: rotate(23.7deg); }
+.child-arm-left  { transform: rotate(137deg); }
+.child-arm-right { transform: rotate(-137deg); }
+
+/* armed (set by JS right before playing): walkers wait outside the stage */
+.scene.armed .walker-left  { transform: translateX(-560px); }
+.scene.armed .walker-right { transform: translateX(560px); }
+.scene.armed .arm-reach-left, .scene.armed .arm-reach-right,
+.scene.armed .child-arm-left, .scene.armed .child-arm-right { transform: none; }
+.scene.armed .heart { opacity: 0; }
 
 /* play */
 .scene.play .walker-left  { animation: walkInLeft 2.4s cubic-bezier(.25,.8,.35,1) both; }
@@ -203,13 +214,6 @@ p { margin: 0 0 1em; }
 .scene.play .heart-2 { animation: heartPop 1s 3.4s ease-out both, heartFloat 3s 4.4s ease-in-out infinite; }
 .scene.play .heart-3 { animation: heartPop 1s 3.7s ease-out both, heartFloat 3s 4.7s ease-in-out infinite; }
 
-/* final state without animation (reduced motion) */
-.scene.final .walker-left, .scene.final .walker-right { transform: none; }
-.scene.final .arm-reach-left { transform: rotate(-23.7deg); }
-.scene.final .arm-reach-right { transform: rotate(23.7deg); }
-.scene.final .child-arm-left { transform: rotate(137deg); }
-.scene.final .child-arm-right { transform: rotate(-137deg); }
-.scene.final .heart { opacity: 1; }
 
 @keyframes walkInLeft  { from { transform: translateX(-560px); } to { transform: translateX(0); } }
 @keyframes walkInRight { from { transform: translateX(560px); } to { transform: translateX(0); } }
@@ -419,6 +423,8 @@ p { margin: 0 0 1em; }
   .site-header.open .nav-toggle span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
   .hero-inner, .split, .split-reverse, .form-layout { grid-template-columns: 1fr; }
   .hero-text { text-align: center; }
+  .hero-scene { order: -1; max-width: 520px; width: 100%; margin: -16px auto 0; }
+  .hero-inner { gap: 8px; }
   .lead { margin-inline: auto; }
   .hero-cta { justify-content: center; }
   .cards-3, .journey { grid-template-columns: 1fr; }
