@@ -96,100 +96,130 @@
     replay.hidden = true;
   }
 
-  /* ---------- Anmeldeformular ---------- */
-  var form = document.getElementById("signup");
-  var status = document.getElementById("form-status");
-  var cfg = window.MEDIPATEN_CONFIG || {};
-
-  function setStatus(msg, type) {
-    status.textContent = msg;
-    status.className = "form-status" + (type ? " " + type : "");
-  }
-
-  function validate() {
-    var ok = true;
-    form.querySelectorAll("[required]").forEach(function (f) {
-      var valid = f.type === "checkbox" ? f.checked : f.value.trim() !== "" && f.checkValidity();
-      var target = f.type === "checkbox" ? f.closest(".consent") : f;
-      target.classList.toggle("invalid", !valid);
-      if (!valid) ok = false;
+  /* ---------- Kontaktformular: Reiter ---------- */
+  var tabs = Array.prototype.slice.call(document.querySelectorAll(".form-tab"));
+  function openTab(id, focus) {
+    tabs.forEach(function (t) {
+      var on = t.getAttribute("aria-controls") === id;
+      t.setAttribute("aria-selected", on ? "true" : "false");
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute("aria-controls")).hidden = !on;
+      if (on && focus) t.focus();
     });
-    return ok;
+    document.querySelectorAll(".intro-panel").forEach(function (p) { p.hidden = p.getAttribute("data-panel") !== id; });
   }
-  form.addEventListener("input", function (e) {
-    var t = e.target.type === "checkbox" ? e.target.closest(".consent") : e.target;
-    if (t && t.classList.contains("invalid")) validate();
+  tabs.forEach(function (t, i) {
+    t.addEventListener("click", function () { openTab(t.getAttribute("aria-controls")); });
+    t.addEventListener("keydown", function (e) {
+      if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+      var next = tabs[(i + (e.key === "ArrowRight" ? 1 : tabs.length - 1)) % tabs.length];
+      openTab(next.getAttribute("aria-controls"), true);
+    });
+  });
+  // Links wie „Dein Standort fehlt?“ öffnen direkt den passenden Reiter
+  document.querySelectorAll("[data-open-tab]").forEach(function (a) {
+    a.addEventListener("click", function () { openTab(a.getAttribute("data-open-tab")); });
+  });
+  // Links auf das Formular („Kontakt“, „Pat:in werden“) zeigen den ersten Reiter
+  document.querySelectorAll('a[href="#mitmachen"]:not([data-open-tab])').forEach(function (a) {
+    a.addEventListener("click", function () { openTab("signup"); });
   });
 
-  function showSuccess(name) {
-    form.classList.add("sent");
-    form.innerHTML =
-      '<div class="success"><span class="big" aria-hidden="true">💛</span>' +
-      "<h3>Danke, " + escapeHtml(name.split(" ")[0]) + "!</h3>" +
-      "<p>Deine Anmeldung ist bei uns angekommen. Wir melden uns bald persönlich bei dir.</p>" +
-      '<p class="muted">Bis dahin: Schau gern auf unserem Instagram-Profil vorbei – <a href="https://www.instagram.com/medipatenwitten.herdecke/" target="_blank" rel="noopener">@medipatenwitten.herdecke</a></p></div>';
-  }
+  /* ---------- Kontaktformular: Absenden ---------- */
+  var cfg = window.MEDIPATEN_CONFIG || {};
+  var LABELS = { name: "Name", email: "E-Mail", semester: "Semester", studiengang: "Studiengang", stadt: "Stadt", uni_klinik: "Uni / Klinik", nachricht: "Nachricht" };
+
   function escapeHtml(s) {
     return s.replace(/[&<>"']/g, function (c) {
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
     });
   }
 
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-    if (form.elements._gotcha.value) return; // Bot
-    if (!validate()) {
-      setStatus("Bitte fülle alle Pflichtfelder (*) aus.", "err");
-      var first = form.querySelector(".invalid");
-      if (first) (first.querySelector("input") || first).focus();
-      return;
+  function setupForm(form) {
+    var status = form.querySelector(".form-status");
+    function setStatus(msg, type) {
+      status.textContent = msg;
+      status.className = "form-status" + (type ? " " + type : "");
     }
-
-    var data = {
-      name: form.elements.name.value.trim(),
-      email: form.elements.email.value.trim(),
-      semester: form.elements.semester.value,
-      studiengang: form.elements.studiengang.value.trim(),
-      nachricht: form.elements.nachricht.value.trim(),
-      datenschutz: "zugestimmt",
-      _subject: "Neue MEDIPATEN-Anmeldung: " + form.elements.name.value.trim(),
-      _replyto: form.elements.email.value.trim()
-    };
-    // Zusatzoptionen, die nur FormSubmit versteht
-    if (/formsubmit\.co/.test(cfg.FORM_ENDPOINT || "")) {
-      data._template = "table";
-      data._captcha = "false";
+    function validate() {
+      var ok = true;
+      form.querySelectorAll("[required]").forEach(function (f) {
+        var valid = f.type === "checkbox" ? f.checked : f.value.trim() !== "" && f.checkValidity();
+        var target = f.type === "checkbox" ? f.closest(".consent") : f;
+        target.classList.toggle("invalid", !valid);
+        if (!valid) ok = false;
+      });
+      return ok;
     }
-
-    if (!cfg.FORM_ENDPOINT) {
-      if (cfg.CONTACT_EMAIL) {
-        var body = "Name: " + data.name + "\nE-Mail: " + data.email + "\nSemester: " + data.semester +
-          "\nStudiengang: " + data.studiengang + "\n\n" + data.nachricht;
-        window.location.href = "mailto:" + cfg.CONTACT_EMAIL + "?subject=" +
-          encodeURIComponent(data._subject) + "&body=" + encodeURIComponent(body);
-        setStatus("Dein E-Mail-Programm öffnet sich – bitte sende die Nachricht dort ab.", "ok");
-      } else {
-        setStatus("Das Formular ist noch nicht eingerichtet. Bitte schreib uns vorerst über Instagram.", "err");
-      }
-      return;
-    }
-
-    var btn = form.querySelector('button[type="submit"]');
-    btn.disabled = true;
-    btn.textContent = "Wird gesendet …";
-    setStatus("");
-
-    fetch(cfg.FORM_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify(data)
-    }).then(function (res) {
-      if (!res.ok) throw new Error("HTTP " + res.status);
-      showSuccess(data.name);
-    }).catch(function () {
-      btn.disabled = false;
-      btn.textContent = "Anmeldung absenden";
-      setStatus("Das hat leider nicht geklappt. Bitte versuche es später erneut oder schreib uns über Instagram.", "err");
+    form.addEventListener("input", function (e) {
+      var t = e.target.type === "checkbox" ? e.target.closest(".consent") : e.target;
+      if (t && t.classList.contains("invalid")) validate();
     });
-  });
+
+    function showSuccess(name) {
+      form.classList.add("sent");
+      form.innerHTML =
+        '<div class="success"><span class="big" aria-hidden="true">💛</span>' +
+        "<h3>Danke, " + escapeHtml(name.split(" ")[0]) + "!</h3>" +
+        "<p>" + escapeHtml(form.getAttribute("data-success")) + "</p>" +
+        '<p class="muted">Bis dahin: Schau gern auf unserem Instagram-Profil vorbei – <a href="https://www.instagram.com/medipatenwitten.herdecke/" target="_blank" rel="noopener">@medipatenwitten.herdecke</a></p></div>';
+    }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      if (form.elements._gotcha.value) return; // Bot
+      if (!validate()) {
+        setStatus("Bitte fülle alle Pflichtfelder (*) aus.", "err");
+        var first = form.querySelector(".invalid");
+        if (first) (first.querySelector("input") || first).focus();
+        return;
+      }
+
+      var data = { anliegen: form.getAttribute("data-topic") };
+      Array.prototype.forEach.call(form.elements, function (el) {
+        if (!el.name || el.name === "_gotcha" || el.name === "datenschutz") return;
+        data[el.name] = el.value.trim();
+      });
+      data.datenschutz = "zugestimmt";
+      data._subject = form.getAttribute("data-subject") + ": " + data.name;
+      data._replyto = data.email;
+      // Zusatzoptionen, die nur FormSubmit versteht
+      if (/formsubmit\.co/.test(cfg.FORM_ENDPOINT || "")) {
+        data._template = "table";
+        data._captcha = "false";
+      }
+
+      if (!cfg.FORM_ENDPOINT) {
+        if (cfg.CONTACT_EMAIL) {
+          var body = Object.keys(LABELS).filter(function (k) { return data[k]; })
+            .map(function (k) { return LABELS[k] + ": " + data[k]; }).join("\n");
+          window.location.href = "mailto:" + cfg.CONTACT_EMAIL + "?subject=" +
+            encodeURIComponent(data._subject) + "&body=" + encodeURIComponent(body);
+          setStatus("Dein E-Mail-Programm öffnet sich – bitte sende die Nachricht dort ab.", "ok");
+        } else {
+          setStatus("Das Formular ist noch nicht eingerichtet. Bitte schreib uns vorerst über Instagram.", "err");
+        }
+        return;
+      }
+
+      var btn = form.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      btn.textContent = "Wird gesendet …";
+      setStatus("");
+
+      fetch(cfg.FORM_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(data)
+      }).then(function (res) {
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        showSuccess(data.name);
+      }).catch(function () {
+        btn.disabled = false;
+        btn.textContent = form.getAttribute("data-button");
+        setStatus("Das hat leider nicht geklappt. Bitte versuche es später erneut oder schreib uns über Instagram.", "err");
+      });
+    });
+  }
+  document.querySelectorAll(".contact-form").forEach(setupForm);
 })();

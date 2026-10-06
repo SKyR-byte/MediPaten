@@ -35,6 +35,7 @@
       <a href="#standorte">Standorte</a>
       <a href="#unterstuetzer">Unterstützer</a>
       <a href="#socials">Socials</a>
+      <a href="#mitmachen">Kontakt</a>
     </nav>
 
     <a href="#mitmachen" class="btn btn-primary btn-header">Pat:in werden</a>
@@ -382,6 +383,7 @@
         <p>Kinder und Jugendliche mit schweren Erkrankungen verbringen oft viele Wochen oder Monate im Krankenhaus, eine Zeit, die medizinisch, emotional und psychisch herausfordernd ist. Unsere Studierenden begleiten sie in dieser Zeit als Wegbegleiter, Spielgefährten und Freunde. Sie schenken Nähe, Leichtigkeit und Vertrauen und schaffen wertvolle Momente der Unbeschwertheit im Klinikalltag.</p>
         <p>Doch die MEDI Paten sind längst mehr als einzelne Patenschaften. Ein engagiertes Organisationsteam koordiniert kreative Mitmachaktionen, Fundraising-Initiativen und neue Projekte wie die <strong>Cuddle Buddies</strong>. Dies ist eine Initiative auf den neonatologischen Stationen, bei der Studierende Frühgeborene liebevoll begleiten, wenn Eltern nicht dauerhaft vor Ort sein können.</p>
         <p>Mittlerweile sind wir an mehreren Standorten aktiv: in Tübingen, Heidelberg, Homburg, Augsburg und Zürich. Im September 2025 wurde das Projekt erstmals international am Universitäts-Kinderspital Zürich etabliert. Weitere Kooperationen in Deutschland und in Tansania sind im Aufbau.</p>
+        <a href="#mitmachen" class="btn btn-primary locations-cta" data-open-tab="standort-form">Dein Standort fehlt? Schreib uns</a>
       </div>
     </div>
   </div>
@@ -421,59 +423,114 @@
   </div>
 </section>
 
-<!-- ============ MITMACHEN / FORMULAR ============ -->
+<!-- ============ KONTAKT / FORMULAR ============ -->
 <section class="section section-navy" id="mitmachen">
   <div class="rainbow rainbow-right" aria-hidden="true"></div>
   <div class="container form-layout">
     <div class="form-intro reveal">
-      <h2 class="display">Pat:in<br>werden</h2>
-      <span class="title-bar"></span>
-      <p>Du studierst Humanmedizin an der Universität Witten/Herdecke und möchtest Kindern im Krankenhaus ein Lachen schenken? Dann melde dich bei uns!</p>
-      <p>Wir melden uns persönlich bei dir, erzählen dir alles über Auswahl, Vorbereitung und Schulung – und finden gemeinsam heraus, ob eine MEDI-Patenschaft zu dir passt.</p>
+      <div class="intro-panel" data-panel="signup">
+        <h2 class="display">Pat:in<br>werden</h2>
+        <span class="title-bar"></span>
+        <p>Du studierst Humanmedizin an der Universität Witten/Herdecke und möchtest Kindern im Krankenhaus ein Lachen schenken? Dann melde dich bei uns!</p>
+        <p>Wir melden uns persönlich bei dir, erzählen dir alles über Auswahl, Vorbereitung und Schulung – und finden gemeinsam heraus, ob eine MEDI-Patenschaft zu dir passt.</p>
+      </div>
+      <div class="intro-panel" data-panel="standort-form" hidden>
+        <h2 class="display">Dein Standort<br>fehlt?</h2>
+        <span class="title-bar"></span>
+        <p>Du möchtest MEDIPATEN an deine Uni oder in deine Klinik bringen? Wir freuen uns über jede Idee und Anregung für einen neuen Standort.</p>
+        <p>Erzähl uns, wo du bist und was du dir vorstellst. Wir melden uns bei dir und teilen gern unsere Erfahrungen aus den bestehenden Standorten.</p>
+      </div>
       <img src="assets/img/otter.png" alt="" class="otter otter-small run" aria-hidden="true">
     </div>
 
-    <form class="signup reveal" id="signup" novalidate>
+    <div class="contact-card reveal">
       <h3>Kontaktformular</h3>
-      <div class="field">
-        <label for="f-name">Vor- und Nachname *</label>
-        <input id="f-name" name="name" type="text" autocomplete="name" required>
+      <div class="form-tabs" role="tablist" aria-label="Anliegen wählen">
+        <button type="button" class="form-tab" role="tab" id="tab-signup" aria-controls="signup" aria-selected="true">Pat:in werden</button>
+        <button type="button" class="form-tab" role="tab" id="tab-standort" aria-controls="standort-form" aria-selected="false" tabindex="-1">Dein Standort fehlt?</button>
       </div>
-      <div class="field">
-        <label for="f-email">E-Mail-Adresse *</label>
-        <input id="f-email" name="email" type="email" autocomplete="email" required>
-      </div>
-      <div class="field-row">
+
+      <!-- Reiter 1: Pat:in werden -->
+      <form class="contact-form" id="signup" role="tabpanel" aria-labelledby="tab-signup" novalidate
+            data-topic="Pat:in werden" data-subject="Neue MEDIPATEN-Anmeldung"
+            data-button="Anmeldung absenden"
+            data-success="Deine Anmeldung ist bei uns angekommen. Wir melden uns bald persönlich bei dir.">
         <div class="field">
-          <label for="f-semester">Fachsemester *</label>
-          <select id="f-semester" name="semester" required>
-            <option value="" disabled selected>Bitte wählen</option>
-            <option>1</option><option>2</option><option>3</option><option>4</option>
-            <option>5</option><option>6</option><option>7</option><option>8</option>
-            <option>9</option><option>10</option><option>11</option><option>12</option>
-            <option>13 oder höher</option>
-          </select>
+          <label for="f-name">Vor- und Nachname *</label>
+          <input id="f-name" name="name" type="text" autocomplete="name" required>
         </div>
         <div class="field">
-          <label for="f-studiengang">Studiengang *</label>
-          <select id="f-studiengang" name="studiengang" required>
-            <option value="Humanmedizin" selected>Humanmedizin</option>
-          </select>
+          <label for="f-email">E-Mail-Adresse *</label>
+          <input id="f-email" name="email" type="email" autocomplete="email" required>
         </div>
-      </div>
-      <div class="field">
-        <label for="f-msg">Erzähl uns gern etwas über dich <span class="opt">(optional)</span></label>
-        <textarea id="f-msg" name="nachricht" rows="4" placeholder="Was motiviert dich? Hast du schon Erfahrung mit Kindern?"></textarea>
-      </div>
-      <!-- Spam-Schutz (für Menschen unsichtbar) -->
-      <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <div class="field-row">
+          <div class="field">
+            <label for="f-semester">Fachsemester *</label>
+            <select id="f-semester" name="semester" required>
+              <option value="" disabled selected>Bitte wählen</option>
+              <option>1</option><option>2</option><option>3</option><option>4</option>
+              <option>5</option><option>6</option><option>7</option><option>8</option>
+              <option>9</option><option>10</option><option>11</option><option>12</option>
+              <option>13 oder höher</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-studiengang">Studiengang *</label>
+            <select id="f-studiengang" name="studiengang" required>
+              <option value="Humanmedizin" selected>Humanmedizin</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-msg">Erzähl uns gern etwas über dich <span class="opt">(optional)</span></label>
+          <textarea id="f-msg" name="nachricht" rows="4" placeholder="Was motiviert dich? Hast du schon Erfahrung mit Kindern?"></textarea>
+        </div>
+        <!-- Spam-Schutz (für Menschen unsichtbar) -->
+        <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
       <label class="consent">
         <input type="checkbox" name="datenschutz" required>
         <span>Ich bin einverstanden, dass meine Angaben zur Kontaktaufnahme im Rahmen von MEDIPATEN gespeichert und verarbeitet werden. *</span>
       </label>
-      <button type="submit" class="btn btn-primary btn-lg btn-block">Anmeldung absenden</button>
-      <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
-    </form>
+        <button type="submit" class="btn btn-primary btn-lg btn-block">Anmeldung absenden</button>
+        <p class="form-status" role="status" aria-live="polite"></p>
+      </form>
+
+      <!-- Reiter 2: Dein Standort fehlt? -->
+      <form class="contact-form" id="standort-form" role="tabpanel" aria-labelledby="tab-standort" novalidate hidden
+            data-topic="Neuer Standort" data-subject="Idee für einen neuen MEDIPATEN-Standort"
+            data-button="Nachricht absenden"
+            data-success="Deine Nachricht ist bei uns angekommen. Danke für deine Idee – wir melden uns bei dir.">
+        <div class="field">
+          <label for="s-name">Vor- und Nachname *</label>
+          <input id="s-name" name="name" type="text" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="s-email">E-Mail-Adresse *</label>
+          <input id="s-email" name="email" type="email" autocomplete="email" required>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="s-ort">Stadt *</label>
+            <input id="s-ort" name="stadt" type="text" autocomplete="address-level2" placeholder="z. B. Münster" required>
+          </div>
+          <div class="field">
+            <label for="s-uni">Uni / Klinik <span class="opt">(optional)</span></label>
+            <input id="s-uni" name="uni_klinik" type="text" placeholder="z. B. Universitätsklinikum Münster">
+          </div>
+        </div>
+        <div class="field">
+          <label for="s-msg">Deine Ideen und Anregungen *</label>
+          <textarea id="s-msg" name="nachricht" rows="5" placeholder="Wer wäre dabei? Gibt es schon Kontakte zu einer Kinderstation? Was brauchst du von uns?" required></textarea>
+        </div>
+        <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <label class="consent">
+        <input type="checkbox" name="datenschutz" required>
+        <span>Ich bin einverstanden, dass meine Angaben zur Kontaktaufnahme im Rahmen von MEDIPATEN gespeichert und verarbeitet werden. *</span>
+      </label>
+        <button type="submit" class="btn btn-primary btn-lg btn-block">Nachricht absenden</button>
+        <p class="form-status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
   </div>
 </section>
 
