@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="de" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MEDIPATEN – Patenschaften für schwer erkrankte Kinder</title>
+  <meta name="description" content="MEDIPATEN: Medizinstudierende der Universität Witten/Herdecke übernehmen Patenschaften für schwer erkrankte Kinder und Jugendliche im Krankenhaus. Unterstützt von der Children Cancer Foundation.">
+  <meta name="theme-color" content="#12305e">
+  <link rel="icon" href="assets/img/otter.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Lexend:wght@300;400;500;600;700&family=Titan+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header class="site-header" id="top">
+  <div class="container header-inner">
+    <a href="#top" class="brand" aria-label="MEDIPATEN – zur Startseite">
+      <img src="assets/img/medipaten-logo.png" alt="MEDIPATEN" class="logo-medipaten">
+    </a>
+    <div class="brand-support">
+      <span>unterstützt von</span>
+      <a href="#unterstuetzer" aria-label="Children Cancer Foundation – Unterstützerin">
+        <img src="assets/img/ccf-logo.png" alt="Children Cancer Foundation" class="logo-ccf">
+      </a>
+    </div>
+
+    <nav class="main-nav" id="main-nav" aria-label="Hauptnavigation">
+      <a href="#idee">Idee</a>
+      <a href="#patenschaft">Patenschaft</a>
+      <a href="#konzept">Konzept</a>
+      <a href="#unterstuetzer">Unterstützer</a>
+      <a href="#instagram">Instagram</a>
+    </nav>
+
+    <a href="#mitmachen" class="btn btn-primary btn-header">Pat:in werden</a>
+    <button class="nav-toggle" aria-label="Menü öffnen" aria-expanded="false" aria-controls="main-nav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="rainbow rainbow-left" aria-hidden="true"></div>
+  <div class="container hero-inner">
+    <div class="hero-text reveal">
+      <p class="eyebrow">Universität Witten/Herdecke · Gemeinschaftskrankenhaus Herdecke</p>
+      <h1>Niemand sollte <span class="hl-pink">allein</span> durch die Klinikzeit gehen.</h1>
+      <p class="lead">MEDIPATEN ist ein verlässliches Begleitkonzept für schwer erkrankte Kinder und Jugendliche. Medizinstudierende werden zu festen Bezugspersonen – sie schenken Zeit, hören zu und schaffen Momente, in denen das Kind im Mittelpunkt steht.</p>
+      <div class="hero-cta">
+        <a href="#mitmachen" class="btn btn-primary btn-lg">Pat:in werden</a>
+        <a href="#patenschaft" class="btn btn-ghost btn-lg">Mehr erfahren</a>
+      </div>
+    </div>
+
+    <!-- Animation: Pat:innen nehmen das Kind an die Hand -->
+    <div class="hero-scene reveal" aria-hidden="true">
+      <svg class="scene" id="scene" viewBox="90 20 620 410" role="img">
+        <!-- background blob + ground -->
+        <ellipse cx="400" cy="408" rx="330" ry="18" class="ground"/>
+        <g class="sparkles">
+          <circle cx="120" cy="90" r="5" fill="#ffd25e"/>
+          <circle cx="690" cy="70" r="6" fill="#1fc2c2"/>
+          <circle cx="640" cy="200" r="4" fill="#ff7bac"/>
+          <circle cx="170" cy="230" r="4" fill="#ff8a1f"/>
+        </g>
+
+        <!-- ===== WOMAN (from left) ===== -->
+        <g class="walker walker-left">
+          <g class="bob">
+            <!-- legs -->
+            <g class="leg leg-a" style="transform-origin:262px 300px"><path d="M262 296 L262 392" class="limb pants-w"/><ellipse cx="266" cy="396" rx="13" ry="7" class="shoe"/></g>
+            <g class="leg leg-b" style="transform-origin:288px 300px"><path d="M288 296 L288 392" class="limb pants-w"/><ellipse cx="292" cy="396" rx="13" ry="7" class="shoe"/></g>
+            <!-- back arm -->
+            <g class="arm-back" style="transform-origin:253px 152px"><path d="M253 152 L253 262" class="limb coat-arm"/><circle cx="253" cy="268" r="9" class="skin-w"/></g>
+            <!-- coat / body -->
+            <path d="M246 140 Q275 128 304 140 L316 300 Q275 310 234 300 Z" class="coat"/>
+            <path d="M264 140 L275 196 L286 140 Z" class="shirt-w"/>
+            <path d="M275 196 L275 298" class="coat-line"/>
+            <!-- stethoscope -->
+            <path d="M262 144 Q256 200 278 206 Q300 200 290 144" class="stetho"/>
+            <circle cx="278" cy="210" r="5" class="stetho-dot"/>
+            <!-- neck + head -->
+            <rect x="268" y="114" width="14" height="22" rx="6" class="skin-w"/>
+            <path d="M236 92 Q232 40 275 38 Q318 40 314 92 L318 150 Q300 140 296 110 L254 110 Q250 140 232 150 Z" class="hair-w"/>
+            <circle cx="275" cy="86" r="32" class="skin-w"/>
+            <path d="M243 80 Q250 48 280 50 Q306 52 308 78 Q290 66 270 62 Q256 72 243 80 Z" class="hair-w"/>
+            <circle cx="264" cy="88" r="3.2" class="eye"/><circle cx="288" cy="88" r="3.2" class="eye"/>
+            <path d="M266 100 Q276 108 286 100" class="smile"/>
+            <circle cx="257" cy="98" r="5" class="cheek"/><circle cx="295" cy="98" r="5" class="cheek"/>
+            <!-- inner arm (reaches child) -->
+            <g class="arm-reach arm-reach-left" style="transform-origin:297px 152px"><path d="M297 152 L297 274" class="limb coat-arm"/><circle cx="297" cy="281" r="9" class="skin-w"/></g>
+          </g>
+        </g>
+
+        <!-- ===== MAN (from right) ===== -->
+        <g class="walker walker-right">
+          <g class="bob">
+            <g class="leg leg-a" style="transform-origin:512px 300px"><path d="M512 296 L512 392" class="limb pants-m"/><ellipse cx="508" cy="396" rx="14" ry="7" class="shoe"/></g>
+            <g class="leg leg-b" style="transform-origin:538px 300px"><path d="M538 296 L538 392" class="limb pants-m"/><ellipse cx="534" cy="396" rx="14" ry="7" class="shoe"/></g>
+            <g class="arm-back" style="transform-origin:549px 152px"><path d="M549 152 L549 262" class="limb coat-arm"/><circle cx="549" cy="268" r="9.5" class="skin-m"/></g>
+            <path d="M494 138 Q525 126 556 138 L566 302 Q525 310 484 302 Z" class="coat"/>
+            <path d="M514 138 L525 196 L536 138 Z" class="shirt-m"/>
+            <path d="M525 196 L525 300" class="coat-line"/>
+            <rect x="534" y="214" width="16" height="20" rx="3" class="pocket"/>
+            <rect x="538" y="208" width="3" height="12" rx="1.5" fill="#ff7bac"/>
+            <rect x="518" y="112" width="15" height="22" rx="6" class="skin-m"/>
+            <circle cx="525" cy="84" r="33" class="skin-m"/>
+            <path d="M491 80 Q488 44 526 44 Q562 44 560 80 Q552 62 530 62 Q505 62 491 80 Z" class="hair-m"/>
+            <circle cx="514" cy="88" r="3.2" class="eye"/><circle cx="538" cy="88" r="3.2" class="eye"/>
+            <path d="M515 100 Q526 109 537 100" class="smile"/>
+            <circle cx="506" cy="98" r="5" class="cheek"/><circle cx="545" cy="98" r="5" class="cheek"/>
+            <circle cx="491" cy="88" r="6" class="skin-m"/><circle cx="559" cy="88" r="6" class="skin-m"/>
+            <g class="arm-reach arm-reach-right" style="transform-origin:503px 152px"><path d="M503 152 L503 274" class="limb coat-arm"/><circle cx="503" cy="281" r="9.5" class="skin-m"/></g>
+          </g>
+        </g>
+
+        <!-- ===== CHILD (center) ===== -->
+        <g class="child">
+          <g class="child-bob">
+            <path d="M388 348 L388 394" class="limb pants-c"/><ellipse cx="386" cy="397" rx="11" ry="6" class="shoe-c"/>
+            <path d="M412 348 L412 394" class="limb pants-c"/><ellipse cx="414" cy="397" rx="11" ry="6" class="shoe-c"/>
+            <g class="child-arm child-arm-left" style="transform-origin:379px 300px"><path d="M379 300 L379 341" class="limb shirt-c-arm"/><circle cx="379" cy="347" r="7.5" class="skin-c"/></g>
+            <g class="child-arm child-arm-right" style="transform-origin:421px 300px"><path d="M421 300 L421 341" class="limb shirt-c-arm"/><circle cx="421" cy="347" r="7.5" class="skin-c"/></g>
+            <path d="M376 296 Q400 286 424 296 L428 352 Q400 358 372 352 Z" class="shirt-c"/>
+            <path d="M392 318 l8 8 l8 -8 a4.6 4.6 0 0 0 -8 -4 a4.6 4.6 0 0 0 -8 4z" fill="#ff7bac"/>
+            <circle cx="400" cy="256" r="30" class="skin-c"/>
+            <!-- beanie -->
+            <path d="M369 252 Q368 216 400 214 Q432 216 431 252 Z" class="beanie"/>
+            <rect x="366" y="244" width="68" height="12" rx="6" class="beanie-band"/>
+            <circle cx="400" cy="211" r="7" class="beanie-pom"/>
+            <circle cx="390" cy="266" r="3" class="eye"/><circle cx="410" cy="266" r="3" class="eye"/>
+            <path d="M390 276 Q400 285 410 276" class="smile"/>
+            <circle cx="382" cy="275" r="4.5" class="cheek"/><circle cx="418" cy="275" r="4.5" class="cheek"/>
+          </g>
+        </g>
+
+        <!-- hearts after joining hands -->
+        <g class="hearts">
+          <path class="heart heart-1" d="M340 236 l11 11 l11 -11 a6.4 6.4 0 0 0 -11 -5.5 a6.4 6.4 0 0 0 -11 5.5z"/>
+          <path class="heart heart-2" d="M440 236 l11 11 l11 -11 a6.4 6.4 0 0 0 -11 -5.5 a6.4 6.4 0 0 0 -11 5.5z"/>
+          <path class="heart heart-3" d="M388 176 l12 12 l12 -12 a7 7 0 0 0 -12 -6 a7 7 0 0 0 -12 6z"/>
+        </g>
+      </svg>
+      <button class="replay" id="replay" type="button" aria-label="Animation erneut abspielen">↻ nochmal</button>
+    </div>
+  </div>
+  <a href="#idee" class="scroll-hint" aria-label="Weiter nach unten"><span></span></a>
+</section>
+
+<!-- ============ IDEE ============ -->
+<section class="section section-light" id="idee">
+  <div class="container narrow center">
+    <p class="kicker reveal">Unsere Idee</p>
+    <blockquote class="big-quote reveal">Jedes schwer erkrankte Kind soll im Krankenhaus einen Menschen an seiner Seite haben, der <span class="u-teal">zuverlässig wiederkommt</span>, <span class="u-yellow">zuhört</span> und <span class="u-pink">Nähe schenkt</span>.</blockquote>
+    <p class="muted reveal">Im Mittelpunkt steht das Konzept MEDIPATEN – klar, menschlich und alltagstauglich.</p>
+  </div>
+</section>
+
+<!-- ============ WAS IST EINE MEDI-PATENSCHAFT ============ -->
+<section class="section section-navy" id="patenschaft">
+  <div class="rainbow rainbow-right" aria-hidden="true"></div>
+  <div class="container split">
+    <div class="reveal">
+      <h2 class="display">Was ist eine<br>MEDI-Patenschaft?</h2>
+      <span class="title-bar"></span>
+      <p>MEDI-Pat:innen sind <strong>freiwillige und motivierte Medizinstudierende</strong>, die als Spielgefährt:innen und Freund:innen den Klinikalltag von Kindern auf pädiatrischen Stationen schöner machen wollen.</p>
+      <p>Bei gemeinsamen Treffen in der Klinik wird <strong>gespielt, gebastelt oder einfach geredet</strong> – mit dem Ziel, die Stationen mit einem Lachen zu füllen.</p>
+      <ul class="chips">
+        <li>🎲 Spielen</li><li>✂️ Basteln</li><li>💬 Reden</li><li>😊 Lachen</li>
+      </ul>
+    </div>
+    <div class="otter-wrap reveal">
+      <img src="assets/img/otter.png" alt="Das MEDIPATEN-Maskottchen: ein fröhlicher, laufender Otter mit Stirnband" class="otter float">
+    </div>
+  </div>
+</section>
+
+<!-- ============ FÜR WEN ============ -->
+<section class="section section-light">
+  <div class="container">
+    <div class="section-head center reveal">
+      <p class="kicker">Wirkung</p>
+      <h2>Was eine Patenschaft bewirkt</h2>
+      <p class="muted">MEDIPATEN bringt sorgfältig ausgewählte und vorbereitete Studierende als feste Bezugspersonen an die Seite von Kindern und Jugendlichen im Krankenhaus.</p>
+    </div>
+    <div class="cards-3">
+      <article class="card card-blue reveal">
+        <span class="card-num">01</span>
+        <h3>Für Kinder &amp; Jugendliche</h3>
+        <ul>
+          <li>Verlässliche 1:1-Begleitung im Klinikalltag</li>
+          <li>Freude, Abwechslung und echte Zuwendung</li>
+          <li>Vertrauen und emotionale Stabilität</li>
+          <li>Ein Stück Normalität in einer belastenden Zeit</li>
+        </ul>
+      </article>
+      <article class="card card-pink reveal">
+        <span class="card-num">02</span>
+        <h3>Für Familien</h3>
+        <ul>
+          <li>Spürbare Entlastung im Alltag</li>
+          <li>Freiräume zum Durchatmen</li>
+          <li>Sicherheit durch feste Bezugspersonen</li>
+          <li>Zusätzlicher Rückhalt während der Behandlung</li>
+        </ul>
+      </article>
+      <article class="card card-green reveal">
+        <span class="card-num">03</span>
+        <h3>Für Klinik &amp; Station</h3>
+        <ul>
+          <li>Sinnvolle Ergänzung der psychosozialen Versorgung</li>
+          <li>Klare Strukturen statt zusätzlicher Projektlast</li>
+          <li>Verlässliche Zusammenarbeit und feste Abläufe</li>
+          <li>Ein erprobtes Konzept mit menschlicher Wirkung</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SO ENTSTEHT EINE PATENSCHAFT ============ -->
+<section class="section section-navy">
+  <div class="rainbow rainbow-left" aria-hidden="true"></div>
+  <div class="container narrow center">
+    <h2 class="display reveal">So entsteht eine<br>MEDI-Patenschaft</h2>
+    <span class="title-bar reveal"></span>
+    <div class="journey">
+      <div class="journey-step reveal">
+        <div class="journey-icon">🧩</div>
+        <h3>Das passende Match</h3>
+        <p>Für jedes Kind möchten wir eine Patin oder einen Paten finden, die oder der gut zu ihm passt.</p>
+      </div>
+      <div class="journey-step reveal">
+        <div class="journey-icon">🤝</div>
+        <h3>Das erste Kennenlernen</h3>
+        <p>Das Kind, seine Familie und die Pat:innen finden gemeinsam heraus, wie sie ihre Zeit während des Klinikaufenthalts gestalten möchten.</p>
+      </div>
+      <div class="journey-step reveal">
+        <div class="journey-icon">🌈</div>
+        <h3>Regelmäßige Treffen</h3>
+        <p>Die Pat:innen kommen verlässlich wieder – als vertraute Gesichter, die Freude und Abwechslung mitbringen.</p>
+      </div>
+    </div>
+    <p class="pink-line reveal">Und so beginnt eine neue<br>MEDI-Patenschaft!</p>
+    <div class="burst-row reveal">
+      <a href="#mitmachen" class="burst">Meldet euch bei uns und werdet MEDI-Pat:innen!</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ KONZEPT ============ -->
+<section class="section section-light" id="konzept">
+  <div class="container">
+    <div class="section-head center reveal">
+      <p class="kicker">Das Konzept</p>
+      <h2>So funktioniert MEDIPATEN</h2>
+      <p class="muted">MEDIPATEN ist kein loses Zusatzangebot, sondern ein klar strukturiertes Begleitkonzept. Die Organisation, Auswahl und Begleitung der Patenschaften erfolgt verlässlich und abgestimmt.</p>
+    </div>
+
+    <div class="two-col">
+      <div class="col-box reveal">
+        <h3><span class="dot dot-pink"></span>MEDIPATEN bringt ein</h3>
+        <ul class="check">
+          <li>Gewinnung und Auswahl geeigneter Studierender</li>
+          <li>Vorbereitung, Schulung und klare Standards</li>
+          <li>Passgenaues Matching der Patenschaften</li>
+          <li>Begleitung, Reflexion und Qualitätssicherung</li>
+        </ul>
+      </div>
+      <div class="col-box reveal">
+        <h3><span class="dot dot-teal"></span>Die Klinik ermöglicht</h3>
+        <ul class="check">
+          <li>Eine feste Ansprechperson in der Klinik</li>
+          <li>Zugang zu geeigneten Stationen und Situationen</li>
+          <li>Abgestimmte Rahmenbedingungen für Datenschutz und Hygiene</li>
+          <li>Kurze Wege für Abstimmung und Rückmeldung</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="steps-title center reveal">In vier klaren Schritten</h3>
+    <ol class="steps">
+      <li class="step reveal"><span class="step-num s1">1</span><h4>Abstimmen</h4><p>Rahmen, Zielgruppe, Zuständigkeiten</p></li>
+      <li class="step reveal"><span class="step-num s2">2</span><h4>Vorbereiten</h4><p>Standards, Schulung, Organisation</p></li>
+      <li class="step reveal"><span class="step-num s3">3</span><h4>Vermitteln</h4><p>Matching, Begleitung, Rückmeldung</p></li>
+      <li class="step reveal"><span class="step-num s4">4</span><h4>Verankern</h4><p>Evaluation, Qualität, Weiterentwicklung</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ STANDORT ============ -->
+<section class="section section-tint" id="standort">
+  <div class="container split split-reverse">
+    <div class="reveal">
+      <p class="kicker">Erster Klinikstandort</p>
+      <h2>Warum Herdecke?</h2>
+      <p>Das <strong>Gemeinschaftskrankenhaus Herdecke</strong> ist unser erster gemeinsamer Klinikstandort. Hier werden die ersten Patenschaften gemeinsam vermittelt und begleitet. Damit wird das Konzept dort sichtbar, wo es gebraucht wird: <strong>nah am Kind, nah an der Familie und nah an der Station.</strong></p>
+      <ul class="check">
+        <li>Erster gemeinsamer Standort</li>
+        <li>Klare Kooperation mit der Universität Witten/Herdecke</li>
+        <li>Fokus auf Patenschaften – nicht auf Zusatzaufwand</li>
+        <li>Ein Konzept, das verlässlich und menschlich wirkt</li>
+      </ul>
+    </div>
+    <div class="partner-logos reveal">
+      <div class="logo-card"><img src="assets/img/uwh-logo.png" alt="Universität Witten/Herdecke"></div>
+      <div class="logo-card"><img src="assets/img/gkh-logo.png" alt="Gemeinschaftskrankenhaus Herdecke – Universität Witten/Herdecke"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ UNTERSTÜTZER (CCF) ============ -->
+<section class="section section-ccf" id="unterstuetzer">
+  <div class="container narrow center">
+    <p class="kicker reveal">Unterstützer</p>
+    <h2 class="reveal">Unterstützt von der Children Cancer Foundation</h2>
+    <img src="assets/img/ccf-logo.png" alt="CCF – Children Cancer Foundation" class="ccf-hero-logo reveal">
+    <blockquote class="ccf-quote reveal">„Wenn ein Kind an Krebs erkrankt, gerät die Welt ins Wanken. Wir sind da, um die Sorgen kleiner zu machen – gerade die finanziellen.“</blockquote>
+  </div>
+
+  <div class="container narrow">
+    <div class="ccf-about reveal">
+      <h3>Wer ist die CCF?</h3>
+      <p>Die Children Cancer Foundation (CCF) unterstützt Familien, deren Alltag durch die Krebserkrankung eines Kindes plötzlich aus dem Gleichgewicht gerät. Ein besonderer Schwerpunkt liegt darauf, zusätzliche Belastungen zu reduzieren und Familien dort zu entlasten, wo finanzielle Sorgen entstehen.</p>
+      <p>Unter dem Namen CCF Children Cancer Foundation bestehen drei eigenständige gemeinnützige Stiftungen in Liechtenstein, der Schweiz und Deutschland.</p>
+      <p>Für MEDIPATEN ist die Children Cancer Foundation eine wichtige Unterstützerin. Gemeinsam verbindet uns das Ziel, schwer erkrankte Kinder und ihre Familien in einer besonders belastenden Lebensphase nicht allein zu lassen.</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <h3 class="center timeline-title reveal">Die Geschichte der CCF</h3>
+    <ol class="timeline">
+      <li class="tl-item reveal"><span class="tl-year">1997</span><p>Die Europäische Stiftung zur Unterstützung von hilfsbedürftigen krebskranken Kindern und Jugendlichen mit Sitz in Liechtenstein wird gegründet.</p></li>
+      <li class="tl-item reveal"><span class="tl-year">2004</span><p>Gründung gemeinnütziger Vereine und Stiftungen in Liechtenstein/Schweiz, Österreich, Deutschland und der Slowakei unter dem Namen «Golfen mit Herz».</p></li>
+      <li class="tl-item reveal"><span class="tl-year">2020</span><p>Die Europäische Stiftung zur Unterstützung von hilfsbedürftigen krebskranken Kindern und Jugendlichen mit Sitz in der Schweiz wird gegründet.</p></li>
+      <li class="tl-item reveal"><span class="tl-year">2023</span><p>Umbenennung der Stiftungen in CCF Children Cancer Foundation.</p></li>
+      <li class="tl-item reveal"><span class="tl-year">2025</span><p>Beitritt zur Vereinigung liechtensteinischer gemeinnütziger Stiftungen und Trusts (VLGST) als «Assoziierte Partnerin».</p></li>
+      <li class="tl-item reveal"><span class="tl-year">2025</span><p>Gründung der CCF Children Cancer Foundation Deutschland mit Sitz in Stuttgart.</p></li>
+    </ol>
+    <div class="center reveal">
+      <a href="https://www.childrencancer.eu" class="btn btn-ccf" target="_blank" rel="noopener">Mehr über die Children Cancer Foundation</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MITMACHEN / FORMULAR ============ -->
+<section class="section section-navy" id="mitmachen">
+  <div class="rainbow rainbow-right" aria-hidden="true"></div>
+  <div class="container form-layout">
+    <div class="form-intro reveal">
+      <h2 class="display">Pat:in<br>werden</h2>
+      <span class="title-bar"></span>
+      <p>Du studierst Medizin (oder einen verwandten Studiengang) an der Universität Witten/Herdecke und möchtest Kindern im Krankenhaus ein Lachen schenken? Dann melde dich bei uns!</p>
+      <p>Wir melden uns persönlich bei dir, erzählen dir alles über Auswahl, Vorbereitung und Schulung – und finden gemeinsam heraus, ob eine MEDI-Patenschaft zu dir passt.</p>
+      <img src="assets/img/otter.png" alt="" class="otter otter-small run" aria-hidden="true">
+    </div>
+
+    <form class="signup reveal" id="signup" novalidate>
+      <h3>Interesse anmelden</h3>
+      <div class="field">
+        <label for="f-name">Vor- und Nachname *</label>
+        <input id="f-name" name="name" type="text" autocomplete="name" required>
+      </div>
+      <div class="field">
+        <label for="f-email">E-Mail-Adresse *</label>
+        <input id="f-email" name="email" type="email" autocomplete="email" required>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="f-semester">Fachsemester *</label>
+          <select id="f-semester" name="semester" required>
+            <option value="" disabled selected>Bitte wählen</option>
+            <option>1</option><option>2</option><option>3</option><option>4</option>
+            <option>5</option><option>6</option><option>7</option><option>8</option>
+            <option>9</option><option>10</option><option>11</option><option>12</option>
+            <option>13 oder höher</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-studiengang">Studiengang *</label>
+          <input id="f-studiengang" name="studiengang" type="text" list="studiengaenge" placeholder="z. B. Humanmedizin" required>
+          <datalist id="studiengaenge">
+            <option value="Humanmedizin"><option value="Zahnmedizin"><option value="Pflegewissenschaft"><option value="Psychologie"><option value="Hebammenwissenschaft">
+          </datalist>
+        </div>
+      </div>
+      <div class="field">
+        <label for="f-msg">Erzähl uns gern etwas über dich <span class="opt">(optional)</span></label>
+        <textarea id="f-msg" name="nachricht" rows="4" placeholder="Was motiviert dich? Hast du schon Erfahrung mit Kindern?"></textarea>
+      </div>
+      <!-- Spam-Schutz (für Menschen unsichtbar) -->
+      <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <label class="consent">
+        <input type="checkbox" name="datenschutz" required>
+        <span>Ich bin einverstanden, dass meine Angaben zur Kontaktaufnahme im Rahmen von MEDIPATEN gespeichert und verarbeitet werden. *</span>
+      </label>
+      <button type="submit" class="btn btn-primary btn-lg btn-block">Anmeldung absenden</button>
+      <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
+
+<!-- ============ INSTAGRAM ============ -->
+<section class="section section-light" id="instagram">
+  <div class="container narrow center">
+    <div class="insta-card reveal">
+      <div class="insta-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="40" height="40"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" fill="none" stroke="#fff" stroke-width="2"/><circle cx="12" cy="12" r="4.3" fill="none" stroke="#fff" stroke-width="2"/><circle cx="17.4" cy="6.6" r="1.3" fill="#fff"/></svg>
+      </div>
+      <h2>Folge uns auf Instagram</h2>
+      <p class="muted">Einblicke, Neuigkeiten und Termine rund um MEDIPATEN – und natürlich unseren Otter.</p>
+      <a class="insta-handle" href="https://www.instagram.com/medipatenwitten.herdecke/" target="_blank" rel="noopener">@medipatenwitten.herdecke</a>
+      <div><a class="btn btn-insta" href="https://www.instagram.com/medipatenwitten.herdecke/" target="_blank" rel="noopener">Zum Instagram-Profil</a></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <img src="assets/img/medipaten-logo.png" alt="MEDIPATEN" class="footer-logo">
+      <p>Verlässliche Patenschaften im Krankenhaus.<br>Ein Projekt von Studierenden der Universität Witten/Herdecke.</p>
+    </div>
+    <div class="footer-links">
+      <a href="#mitmachen">Pat:in werden</a>
+      <a href="#unterstuetzer">Unterstützer</a>
+      <a href="https://www.instagram.com/medipatenwitten.herdecke/" target="_blank" rel="noopener">Instagram</a>
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutz</a>
+    </div>
+  </div>
+  <p class="copy">© <span id="year">2026</span> MEDIPATEN · Universität Witten/Herdecke</p>
+</footer>
+
+<script>document.documentElement.classList.remove("no-js");</script>
+<script src="config.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
