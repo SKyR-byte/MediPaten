@@ -212,12 +212,21 @@
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify(data)
       }).then(function (res) {
-        if (!res.ok) throw new Error("HTTP " + res.status);
-        showSuccess(data.name);
-      }).catch(function () {
+        if (res.ok) return showSuccess(data.name);
+        // Formspree antwortet mit einer Begründung, z. B. bei abgelehnten Absendern
+        return res.json().catch(function () { return {}; }).then(function (j) {
+          var why = (j.errors || []).map(function (x) { return x.message; }).join(" ") || j.error || ("Fehlercode " + res.status);
+          var err = new Error(why); err.fromServer = true; throw err;
+        });
+      }).catch(function (err) {
         btn.disabled = false;
         btn.textContent = form.getAttribute("data-button");
-        setStatus("Das hat leider nicht geklappt. Bitte versuche es später erneut oder schreib uns über Instagram.", "err");
+        if (err && err.fromServer) {
+          setStatus("Formspree hat die Nachricht abgelehnt: " + err.message, "err");
+        } else {
+          // Keine Antwort: Verbindung blockiert (z. B. Vorschau im Claude-Chat) oder offline
+          setStatus("Die Nachricht konnte nicht gesendet werden, weil keine Verbindung zu Formspree möglich war. In Vorschauen (z. B. im Claude-Chat) ist das blockiert – auf der veröffentlichten Website funktioniert es. Sonst bitte Internetverbindung prüfen oder uns über Instagram schreiben.", "err");
+        }
       });
     });
   }
