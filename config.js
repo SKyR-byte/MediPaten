@@ -12,6 +12,6 @@
    mit einer vorausgefüllten Nachricht.
    ========================================================= */
 window.MEDIPATEN_CONFIG = {
-  FORM_ENDPOINT: "",
+  FORM_ENDPOINT: "https://formspree.io/f/xkjoogbb",
   CONTACT_EMAIL: ""
 };

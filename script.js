@@ -148,10 +148,13 @@
       nachricht: form.elements.nachricht.value.trim(),
       datenschutz: "zugestimmt",
       _subject: "Neue MEDIPATEN-Anmeldung: " + form.elements.name.value.trim(),
-      _replyto: form.elements.email.value.trim(),
-      _template: "table",
-      _captcha: "false"
+      _replyto: form.elements.email.value.trim()
     };
+    // Zusatzoptionen, die nur FormSubmit versteht
+    if (/formsubmit\.co/.test(cfg.FORM_ENDPOINT || "")) {
+      data._template = "table";
+      data._captcha = "false";
+    }
 
     if (!cfg.FORM_ENDPOINT) {
       if (cfg.CONTACT_EMAIL) {

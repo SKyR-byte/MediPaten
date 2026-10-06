@@ -20,6 +20,8 @@ assets/img/         Logos & Otter-Maskottchen
 
 ## Anmeldeformular → automatische E-Mail
 
+**Status:** eingerichtet mit Formspree (`https://formspree.io/f/xkjoogbb`, siehe `config.js`). Empfänger-Adressen werden im Formspree-Konto verwaltet.
+
 Die Seite ist statisch, deshalb übernimmt ein kostenloser Formular-Dienst den Mailversand. Trage in `config.js` bei `FORM_ENDPOINT` eine der beiden Varianten ein:
 
 **A) Formspree (empfohlen)**
