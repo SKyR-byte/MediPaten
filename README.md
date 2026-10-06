@@ -33,6 +33,10 @@ Die Seite ist statisch, deshalb übernimmt ein kostenloser Formular-Dienst den M
 
 Jede Mail enthält: Name, E-Mail, Fachsemester, Studiengang, optionale Nachricht.
 
+## Weitere Social-Media-Plattformen
+
+Im Abschnitt „Socials“ in `index.html` steht eine auskommentierte Vorlage für LinkedIn. Kommentarzeichen entfernen, Profil-Link eintragen und die Karte in das `<div class="social-grid">` verschieben – fertig. Weitere Plattformen nach demselben Muster.
+
 ## Veröffentlichen
 
 Z. B. kostenlos mit **GitHub Pages** (Repository → Settings → Pages → Branch wählen), Netlify oder Cloudflare Pages.
