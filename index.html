@@ -428,7 +428,7 @@
     <div class="form-intro reveal">
       <h2 class="display">Pat:in<br>werden</h2>
       <span class="title-bar"></span>
-      <p>Du studierst Medizin (oder einen verwandten Studiengang) an der Universität Witten/Herdecke und möchtest Kindern im Krankenhaus ein Lachen schenken? Dann melde dich bei uns!</p>
+      <p>Du studierst Humanmedizin an der Universität Witten/Herdecke und möchtest Kindern im Krankenhaus ein Lachen schenken? Dann melde dich bei uns!</p>
       <p>Wir melden uns persönlich bei dir, erzählen dir alles über Auswahl, Vorbereitung und Schulung – und finden gemeinsam heraus, ob eine MEDI-Patenschaft zu dir passt.</p>
       <img src="assets/img/otter.png" alt="" class="otter otter-small run" aria-hidden="true">
     </div>
@@ -456,10 +456,9 @@
         </div>
         <div class="field">
           <label for="f-studiengang">Studiengang *</label>
-          <input id="f-studiengang" name="studiengang" type="text" list="studiengaenge" placeholder="z. B. Humanmedizin" required>
-          <datalist id="studiengaenge">
-            <option value="Humanmedizin"><option value="Zahnmedizin"><option value="Pflegewissenschaft"><option value="Psychologie"><option value="Hebammenwissenschaft">
-          </datalist>
+          <select id="f-studiengang" name="studiengang" required>
+            <option value="Humanmedizin" selected>Humanmedizin</option>
+          </select>
         </div>
       </div>
       <div class="field">
