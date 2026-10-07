@@ -415,6 +415,15 @@ p { margin: 0 0 1em; }
 .form-tab { line-height: 1.2; }
 .intro-hint { font-size: .98rem !important; padding: 12px 16px; border-radius: 14px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.16); }
 .intro-hint a { color: var(--yellow); font-weight: 600; }
+.insta-hint { display: flex; align-items: center; gap: 14px; margin-top: 22px; padding: 14px 18px; border-radius: 16px; text-decoration: none; text-align: left; color: rgba(255,255,255,.92); background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.18); transition: background .2s, transform .2s; }
+.insta-hint:hover { background: rgba(255,255,255,.14); transform: translateY(-2px); }
+.insta-hint:focus-visible { outline: 3px solid var(--teal); outline-offset: 3px; }
+.insta-hint-icon { flex-shrink: 0; width: 44px; height: 44px; border-radius: 13px; display: grid; place-items: center; background: radial-gradient(circle at 30% 110%, #ffd25e 0 20%, #ff8a1f 35%, #ff5fa8 60%, #8a5cf6 95%); }
+.insta-hint-text { font-size: .98rem; line-height: 1.5; min-width: 0; }
+.insta-hint-text strong { color: #fff; display: block; }
+.insta-hint-handle { color: var(--yellow); font-weight: 600; word-break: break-word; }
+.social-note { text-align: center; margin: 28px 0 0; color: var(--muted); }
+.social-note a { color: var(--magenta); font-weight: 600; }
 .form-tab:focus-visible { outline: 3px solid var(--teal); outline-offset: 2px; }
 .contact-form { animation: fadeIn .35s ease; }
 .locations-cta { margin-top: 8px; }
