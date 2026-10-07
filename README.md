@@ -10,7 +10,7 @@ styles.css          Design (Farben/Schriften aus Logo & Instagram-Slides)
 script.js           Animationen, Mobile-Menü, Formular
 config.js           ← Formular-Empfänger hier eintragen
 impressum.html      Impressum des MEDI Paten e.V.
-datenschutz.html    Platzhalter – bitte ausfüllen
+datenschutz.html    Datenschutzerklärung (Entwurf, offene Punkte gelb markiert)
 assets/img/         Logos & Otter-Maskottchen
 ```
 
@@ -51,4 +51,4 @@ Z. B. kostenlos mit **GitHub Pages** (Repository → Settings → Pages → Bran
 
 ## Vor dem Livegang
 
-- `datenschutz.html` ausfüllen (in Deutschland Pflicht). Das Impressum ist eingetragen (MEDI Paten e.V.).
+- In `datenschutz.html` die gelb markierten „Noch offen“-Punkte ergänzen (Hoster, Formspree, Speicherdauer, ggf. Datenschutzbeauftragte:r) und die Kästen danach entfernen. Das Impressum ist eingetragen (MEDI Paten e.V.).
