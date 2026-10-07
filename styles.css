@@ -459,6 +459,31 @@ p { margin: 0 0 1em; }
 .social-handle { color: var(--muted); font-size: .98rem; word-break: break-word; }
 .social-cta { margin-top: 14px; font-weight: 600; color: var(--magenta); }
 
+/* ---------- Rechtliche Seiten (Impressum) ---------- */
+.legal { padding: clamp(48px, 8vw, 96px) 0; background:
+  radial-gradient(700px 360px at 100% 0%, rgba(31,194,194,.10), transparent 70%),
+  radial-gradient(600px 360px at 0% 20%, rgba(255,123,172,.10), transparent 70%), var(--bg); }
+.legal-title { font-family: var(--font-display); font-weight: 400; text-transform: uppercase; color: var(--navy); font-size: clamp(2.2rem, 5vw, 3.2rem); margin-bottom: 36px; }
+.legal-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-bottom: 48px; }
+.legal-card { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 22px 24px; box-shadow: 0 4px 18px rgba(18,48,94,.04); }
+.legal-card h2, .legal-text h2 { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: .6em; }
+.legal-card p { margin: 0; color: #33445f; }
+.legal-card a, .legal-text a { color: var(--magenta); font-weight: 600; }
+.legal-list { list-style: none; margin: 0; padding: 0; color: #33445f; }
+.legal-list li + li { margin-top: 4px; }
+.legal-list span { color: var(--muted); }
+.iban { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.legal-text h2 { font-size: 1.15rem; margin-top: 1.6em; }
+.legal-text h2:first-child { margin-top: 0; }
+.legal-text p { color: #33445f; }
+.legal-back { margin-left: auto; }
+@media (max-width: 640px) { .legal-grid { grid-template-columns: 1fr; } }
+
+/* Impressum in der Demo-Datei (eingeblendet über #impressum) */
+.legal-overlay { display: none; }
+.legal-overlay:target { display: block; position: fixed; inset: 0; z-index: 100; overflow-y: auto; background: var(--bg); }
+.legal-overlay-bar { position: sticky; top: 0; z-index: 1; display: flex; justify-content: flex-end; padding: 14px 16px; background: rgba(255,255,255,.95); border-bottom: 1px solid var(--line); }
+
 /* ---------- Footer ---------- */
 .site-footer { background: var(--navy-deep); color: rgba(255,255,255,.8); padding: 56px 0 24px; }
 .footer-inner { display: flex; justify-content: space-between; gap: 32px; flex-wrap: wrap; align-items: center; }

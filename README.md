@@ -9,7 +9,7 @@ index.html          Startseite (alle Abschnitte)
 styles.css          Design (Farben/Schriften aus Logo & Instagram-Slides)
 script.js           Animationen, Mobile-Menü, Formular
 config.js           ← Formular-Empfänger hier eintragen
-impressum.html      Platzhalter – bitte ausfüllen
+impressum.html      Impressum des MEDI Paten e.V.
 datenschutz.html    Platzhalter – bitte ausfüllen
 assets/img/         Logos & Otter-Maskottchen
 ```
@@ -51,4 +51,4 @@ Z. B. kostenlos mit **GitHub Pages** (Repository → Settings → Pages → Bran
 
 ## Vor dem Livegang
 
-- `impressum.html` und `datenschutz.html` ausfüllen (in Deutschland Pflicht).
+- `datenschutz.html` ausfüllen (in Deutschland Pflicht). Das Impressum ist eingetragen (MEDI Paten e.V.).
