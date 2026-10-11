@@ -127,7 +127,7 @@
 
   /* ---------- Kontaktformular: Absenden ---------- */
   var cfg = window.MEDIPATEN_CONFIG || {};
-  var LABELS = { name: "Name", email: "E-Mail", semester: "Semester", studiengang: "Studiengang", taetigkeit: "Studiengang/Beruf", bereich: "Bereich", stadt: "Stadt", uni_klinik: "Uni / Klinik", nachricht: "Nachricht" };
+  var LABELS = { name: "Name", email: "E-Mail", telefon: "Telefon", semester: "Semester", studiengang: "Studiengang", alter: "Alter", alter_kind: "Alter des Kindes", sprachen: "Sprache(n)", klinik: "Klinik / Standort", interesse: "Interesse", taetigkeit: "Studiengang/Beruf", bereich: "Bereich", stadt: "Stadt", uni_klinik: "Uni / Klinik", nachricht: "Nachricht" };
 
   function escapeHtml(s) {
     return s.replace(/[&<>"']/g, function (c) {
@@ -137,6 +137,19 @@
 
   function setupForm(form) {
     var status = form.querySelector(".form-status");
+    // Eltern werden gesiezt, Studierende geduzt
+    var formal = form.hasAttribute("data-formal");
+    var T = formal ? {
+      required: "Bitte füllen Sie alle Pflichtfelder (*) aus.",
+      insta: "Bei Fragen erreichen Sie uns auch auf Instagram –",
+      failed: "Formspree hat die Nachricht abgelehnt: ",
+      offline: "Die Nachricht konnte nicht gesendet werden, weil keine Verbindung zu Formspree möglich war. In Vorschauen (z. B. im Claude-Chat) ist das blockiert – auf der veröffentlichten Website funktioniert es. Sonst prüfen Sie bitte Ihre Internetverbindung oder schreiben Sie uns über Instagram."
+    } : {
+      required: "Bitte fülle alle Pflichtfelder (*) aus.",
+      insta: "Bis dahin: Schau gern auf unserem Instagram-Profil vorbei –",
+      failed: "Formspree hat die Nachricht abgelehnt: ",
+      offline: "Die Nachricht konnte nicht gesendet werden, weil keine Verbindung zu Formspree möglich war. In Vorschauen (z. B. im Claude-Chat) ist das blockiert – auf der veröffentlichten Website funktioniert es. Sonst bitte Internetverbindung prüfen oder uns über Instagram schreiben."
+    };
     function setStatus(msg, type) {
       status.textContent = msg;
       status.className = "form-status" + (type ? " " + type : "");
@@ -144,15 +157,17 @@
     function validate() {
       var ok = true;
       form.querySelectorAll("[required]").forEach(function (f) {
-        var valid = f.type === "checkbox" ? f.checked : f.value.trim() !== "" && f.checkValidity();
-        var target = f.type === "checkbox" ? f.closest(".consent") : f;
+        var valid, target;
+        if (f.type === "checkbox") { valid = f.checked; target = f.closest(".consent"); }
+        else if (f.type === "radio") { valid = !!form.querySelector('input[name="' + f.name + '"]:checked'); target = f.closest(".choice-group"); }
+        else { valid = f.value.trim() !== "" && f.checkValidity(); target = f; }
         target.classList.toggle("invalid", !valid);
         if (!valid) ok = false;
       });
       return ok;
     }
     form.addEventListener("input", function (e) {
-      var t = e.target.type === "checkbox" ? e.target.closest(".consent") : e.target;
+      var t = e.target.type === "checkbox" ? e.target.closest(".consent") : e.target.type === "radio" ? e.target.closest(".choice-group") : e.target;
       if (t && t.classList.contains("invalid")) validate();
     });
 
@@ -160,16 +175,16 @@
       form.classList.add("sent");
       form.innerHTML =
         '<div class="success"><span class="big" aria-hidden="true">💛</span>' +
-        "<h3>Danke, " + escapeHtml(name.split(" ")[0]) + "!</h3>" +
+        "<h3>" + escapeHtml(form.getAttribute("data-success-title") || "Danke, " + name.split(" ")[0] + "!") + "</h3>" +
         "<p>" + escapeHtml(form.getAttribute("data-success")) + "</p>" +
-        '<p class="muted">Bis dahin: Schau gern auf unserem Instagram-Profil vorbei – <a href="https://www.instagram.com/medipatenwitten.herdecke/" target="_blank" rel="noopener">@medipatenwitten.herdecke</a></p></div>';
+        '<p class="muted">' + T.insta + ' <a href="https://www.instagram.com/medipatenwitten.herdecke/" target="_blank" rel="noopener">@medipatenwitten.herdecke</a></p></div>';
     }
 
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       if (form.elements._gotcha.value) return; // Bot
       if (!validate()) {
-        setStatus("Bitte fülle alle Pflichtfelder (*) aus.", "err");
+        setStatus(T.required, "err");
         var first = form.querySelector(".invalid");
         if (first) (first.querySelector("input") || first).focus();
         return;
@@ -178,6 +193,7 @@
       var data = { anliegen: form.getAttribute("data-topic") };
       Array.prototype.forEach.call(form.elements, function (el) {
         if (!el.name || el.name === "_gotcha" || el.name === "datenschutz") return;
+        if ((el.type === "radio" || el.type === "checkbox") && !el.checked) return;
         data[el.name] = el.value.trim();
       });
       data.datenschutz = "zugestimmt";
@@ -222,10 +238,10 @@
         btn.disabled = false;
         btn.textContent = form.getAttribute("data-button");
         if (err && err.fromServer) {
-          setStatus("Formspree hat die Nachricht abgelehnt: " + err.message, "err");
+          setStatus(T.failed + err.message, "err");
         } else {
           // Keine Antwort: Verbindung blockiert (z. B. Vorschau im Claude-Chat) oder offline
-          setStatus("Die Nachricht konnte nicht gesendet werden, weil keine Verbindung zu Formspree möglich war. In Vorschauen (z. B. im Claude-Chat) ist das blockiert – auf der veröffentlichten Website funktioniert es. Sonst bitte Internetverbindung prüfen oder uns über Instagram schreiben.", "err");
+          setStatus(T.offline, "err");
         }
       });
     });
