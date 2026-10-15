@@ -1,0 +1,5 @@
+Die Schriften in diesem Ordner stehen unter der SIL Open Font License 1.1 (OFL-1.1):
+- Bungee (David Jonathan Ross)
+- Lexend (Bonnie Shaver-Troup, Thomas Jockin u. a.)
+- Titan One (Rodrigo Fuenzalida)
+Bezogen über das Fontsource-Projekt (https://fontsource.org). Lizenztext: https://openfontlicense.org

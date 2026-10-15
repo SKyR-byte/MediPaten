@@ -9,9 +9,11 @@ index.html          Startseite (alle Abschnitte)
 styles.css          Design (Farben/Schriften aus Logo & Instagram-Slides)
 script.js           Animationen, Mobile-Menü, Formular
 config.js           ← Formular-Empfänger hier eintragen
-impressum.html      Platzhalter – bitte ausfüllen
-datenschutz.html    Platzhalter – bitte ausfüllen
+impressum.html      Impressum des MEDI Paten e.V.
+datenschutz.html    Datenschutzerklärung (Entwurf, offene Punkte gelb markiert)
 assets/img/         Logos & Otter-Maskottchen
+assets/fonts/       Schriften (lokal eingebunden, SIL Open Font License)
+CNAME               Eigene Domain für GitHub Pages (medipatennrw.de)
 ```
 
 ## Lokal ansehen
@@ -19,6 +21,8 @@ assets/img/         Logos & Otter-Maskottchen
 `index.html` im Browser öffnen – oder `python3 -m http.server` und `http://localhost:8000` aufrufen.
 
 ## Anmeldeformular → automatische E-Mail
+
+**Status:** eingerichtet mit Formspree (`https://formspree.io/f/xkjoogbb`, siehe `config.js`). Empfänger-Adressen werden im Formspree-Konto verwaltet.
 
 Die Seite ist statisch, deshalb übernimmt ein kostenloser Formular-Dienst den Mailversand. Trage in `config.js` bei `FORM_ENDPOINT` eine der beiden Varianten ein:
 
@@ -31,16 +35,34 @@ Die Seite ist statisch, deshalb übernimmt ein kostenloser Formular-Dienst den M
 1. `FORM_ENDPOINT: "https://formsubmit.co/ajax/eure@email.de"` eintragen.
 2. Einmal das Formular selbst absenden → FormSubmit schickt eine Bestätigungsmail, Link anklicken. Ab dann kommt jede Anmeldung per Mail.
 
-Jede Mail enthält: Name, E-Mail, Fachsemester, Studiengang, optionale Nachricht.
+Das Kontaktformular hat vier Reiter, alle schicken an dieselbe Formspree-Adresse:
+
+- **Pat:in werden** – Betreff „Neue MEDIPATEN-Anmeldung: Name“; enthält Name, E-Mail, Fachsemester, Studiengang, optional Alter, Sprache(n), Nachricht.
+- **Patenschaft für mein Kind** (Eltern/Sorgeberechtigte) – Betreff „Neue Eltern-Anfrage: Patenschaft für mein Kind: Name“; enthält Name, E-Mail, optional Telefon, Alter des Kindes, Sprache(n), Klinik/Standort, Interesse, Nachricht. Bewusst keine medizinischen Angaben.
+- **Mitwirken** (auch ohne Medizinstudium) – Betreff „Neue Anfrage zum Mitwirken bei MEDIPATEN: Name“; enthält Name, E-Mail, Studiengang/Beruf, optional Bereich, Ideen.
+- **Dein Standort fehlt?** – Betreff „Idee für einen neuen MEDIPATEN-Standort: Name“; enthält Name, E-Mail, Stadt, optional Uni/Klinik, Ideen und Anregungen.
+
+Das Feld „anliegen“ in jeder Mail zeigt, aus welchem Reiter sie kommt.
 
 ## Weitere Social-Media-Plattformen
 
 Im Abschnitt „Socials“ in `index.html` steht eine auskommentierte Vorlage für LinkedIn. Kommentarzeichen entfernen, Profil-Link eintragen und die Karte in das `<div class="social-grid">` verschieben – fertig. Weitere Plattformen nach demselben Muster.
 
-## Veröffentlichen
+## Veröffentlichen (GitHub Pages + medipatennrw.de)
 
-Z. B. kostenlos mit **GitHub Pages** (Repository → Settings → Pages → Branch wählen), Netlify oder Cloudflare Pages.
+1. Pull Request dieses Branches nach `main` mergen.
+2. Repository → **Settings → Pages** → Source „Deploy from a branch“, Branch `main`, Ordner `/ (root)` → Save.
+3. Unter **Custom domain** `medipatennrw.de` eintragen (die Datei `CNAME` ist bereits angelegt).
+4. Beim Domain-Anbieter (DNS):
+   - 4 × **A**-Eintrag für `@`: `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
+   - **CNAME** für `www` → `skyr-byte.github.io`
+5. Wenn GitHub die Domain erkennt: **Enforce HTTPS** anhaken.
+
+## Später etwas ändern
+
+- Datei auf GitHub öffnen (Branch `main`) → Stift-Symbol → ändern → „Commit changes“. Nach 1–2 Minuten ist die Änderung online.
+- Texte stehen in `index.html`, Farben/Design in `styles.css`, Formular-Empfänger in `config.js`.
 
 ## Vor dem Livegang
 
-- `impressum.html` und `datenschutz.html` ausfüllen (in Deutschland Pflicht).
+- Datenschutzerklärung ist vollständig (Hoster GitHub Pages, Formspree mit DPA, Speicherdauer). Vom Vorstand gegenlesen lassen. Das Impressum ist eingetragen (MEDI Paten e.V.).

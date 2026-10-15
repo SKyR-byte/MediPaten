@@ -59,7 +59,7 @@
         el.classList.add("visible");
         io.unobserve(el);
       });
-    }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+    }, { threshold: 0, rootMargin: "0px 0px -6% 0px" });
     reveals.forEach(function (el) { io.observe(el); });
   }
 
@@ -73,115 +73,210 @@
     replay.classList.remove("show");
     setTimeout(function () { replay.classList.add("show"); }, 4300);
   }
-  if (scene) {
-    if (reduceMotion) {
-      scene.classList.add("final");
-    } else if (hasIO) {
-      var played = false;
+  if (scene && !reduceMotion) {
+    // Ohne JavaScript oder bei reduzierter Bewegung bleibt das fertige Bild stehen.
+    scene.classList.add("armed");
+    var played = false;
+    var start = function () {
+      if (played) return;
+      played = true;
+      setTimeout(play, 300);
+    };
+    if (hasIO) {
       new IntersectionObserver(function (entries, obs) {
-        if (entries[0].isIntersecting && !played) {
-          played = true;
-          setTimeout(play, 350);
-          obs.disconnect();
-        }
-      }, { threshold: 0.4 }).observe(scene);
+        if (entries[0].isIntersecting) { start(); obs.disconnect(); }
+      }, { threshold: 0.25 }).observe(scene);
+      // Sicherheitsnetz, falls der Beobachter in einer Vorschau nie meldet
+      setTimeout(start, 6000);
     } else {
-      play();
+      start();
     }
     replay.addEventListener("click", play);
+  } else if (replay) {
+    replay.hidden = true;
   }
 
-  /* ---------- Anmeldeformular ---------- */
-  var form = document.getElementById("signup");
-  var status = document.getElementById("form-status");
-  var cfg = window.MEDIPATEN_CONFIG || {};
-
-  function setStatus(msg, type) {
-    status.textContent = msg;
-    status.className = "form-status" + (type ? " " + type : "");
-  }
-
-  function validate() {
-    var ok = true;
-    form.querySelectorAll("[required]").forEach(function (f) {
-      var valid = f.type === "checkbox" ? f.checked : f.value.trim() !== "" && f.checkValidity();
-      var target = f.type === "checkbox" ? f.closest(".consent") : f;
-      target.classList.toggle("invalid", !valid);
-      if (!valid) ok = false;
+  /* ---------- Kontaktformular: Reiter ---------- */
+  var tabs = Array.prototype.slice.call(document.querySelectorAll(".form-tab"));
+  function openTab(id, focus) {
+    tabs.forEach(function (t) {
+      var on = t.getAttribute("aria-controls") === id;
+      t.setAttribute("aria-selected", on ? "true" : "false");
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute("aria-controls")).hidden = !on;
+      if (on && focus) t.focus();
     });
-    return ok;
+    document.querySelectorAll(".intro-panel").forEach(function (p) { p.hidden = p.getAttribute("data-panel") !== id; });
   }
-  form.addEventListener("input", function (e) {
-    var t = e.target.type === "checkbox" ? e.target.closest(".consent") : e.target;
-    if (t && t.classList.contains("invalid")) validate();
+  tabs.forEach(function (t, i) {
+    t.addEventListener("click", function () { openTab(t.getAttribute("aria-controls")); });
+    t.addEventListener("keydown", function (e) {
+      if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+      var next = tabs[(i + (e.key === "ArrowRight" ? 1 : tabs.length - 1)) % tabs.length];
+      openTab(next.getAttribute("aria-controls"), true);
+    });
+  });
+  // Links wie „Dein Standort fehlt?“ öffnen direkt den passenden Reiter
+  document.querySelectorAll("[data-open-tab]").forEach(function (a) {
+    a.addEventListener("click", function () { openTab(a.getAttribute("data-open-tab")); });
+  });
+  // Links auf das Formular („Kontakt“, „Pat:in werden“) zeigen den ersten Reiter
+  document.querySelectorAll('a[href="#mitmachen"]:not([data-open-tab])').forEach(function (a) {
+    a.addEventListener("click", function () { openTab("signup"); });
   });
 
-  function showSuccess(name) {
-    form.classList.add("sent");
-    form.innerHTML =
-      '<div class="success"><span class="big" aria-hidden="true">💛</span>' +
-      "<h3>Danke, " + escapeHtml(name.split(" ")[0]) + "!</h3>" +
-      "<p>Deine Anmeldung ist bei uns angekommen. Wir melden uns bald persönlich bei dir.</p>" +
-      '<p class="muted">Bis dahin: Schau gern auf unserem Instagram-Profil vorbei – <a href="https://www.instagram.com/medipatenwitten.herdecke/" target="_blank" rel="noopener">@medipatenwitten.herdecke</a></p></div>';
-  }
+  /* ---------- Kontaktformular: Absenden ---------- */
+  var cfg = window.MEDIPATEN_CONFIG || {};
+  var LABELS = { name: "Name", email: "E-Mail", telefon: "Telefon", semester: "Semester", studiengang: "Studiengang", alter: "Alter", alter_kind: "Alter des Kindes", sprachen: "Sprache(n)", klinik: "Klinik / Standort", interesse: "Interesse", taetigkeit: "Studiengang/Beruf", bereich: "Bereich", stadt: "Stadt", uni_klinik: "Uni / Klinik", nachricht: "Nachricht" };
+
   function escapeHtml(s) {
     return s.replace(/[&<>"']/g, function (c) {
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
     });
   }
 
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-    if (form.elements._gotcha.value) return; // Bot
-    if (!validate()) {
-      setStatus("Bitte fülle alle Pflichtfelder (*) aus.", "err");
-      var first = form.querySelector(".invalid");
-      if (first) (first.querySelector("input") || first).focus();
-      return;
-    }
-
-    var data = {
-      name: form.elements.name.value.trim(),
-      email: form.elements.email.value.trim(),
-      semester: form.elements.semester.value,
-      studiengang: form.elements.studiengang.value.trim(),
-      nachricht: form.elements.nachricht.value.trim(),
-      datenschutz: "zugestimmt",
-      _subject: "Neue MEDIPATEN-Anmeldung: " + form.elements.name.value.trim(),
-      _replyto: form.elements.email.value.trim(),
-      _template: "table",
-      _captcha: "false"
+  function setupForm(form) {
+    var status = form.querySelector(".form-status");
+    // Eltern werden gesiezt, Studierende geduzt
+    var formal = form.hasAttribute("data-formal");
+    var T = formal ? {
+      required: "Bitte füllen Sie alle Pflichtfelder (*) aus.",
+      insta: "Bei Fragen erreichen Sie uns auch auf Instagram –",
+      failed: "Formspree hat die Nachricht abgelehnt: ",
+      offline: "Die Nachricht konnte nicht gesendet werden, weil keine Verbindung zu Formspree möglich war. In Vorschauen (z. B. im Claude-Chat) ist das blockiert – auf der veröffentlichten Website funktioniert es. Sonst prüfen Sie bitte Ihre Internetverbindung oder schreiben Sie uns über Instagram."
+    } : {
+      required: "Bitte fülle alle Pflichtfelder (*) aus.",
+      insta: "Bis dahin: Schau gern auf unserem Instagram-Profil vorbei –",
+      failed: "Formspree hat die Nachricht abgelehnt: ",
+      offline: "Die Nachricht konnte nicht gesendet werden, weil keine Verbindung zu Formspree möglich war. In Vorschauen (z. B. im Claude-Chat) ist das blockiert – auf der veröffentlichten Website funktioniert es. Sonst bitte Internetverbindung prüfen oder uns über Instagram schreiben."
     };
+    function setStatus(msg, type) {
+      status.textContent = msg;
+      status.className = "form-status" + (type ? " " + type : "");
+    }
+    function validate() {
+      var ok = true;
+      form.querySelectorAll("[required]").forEach(function (f) {
+        var valid, target;
+        if (f.type === "checkbox") { valid = f.checked; target = f.closest(".consent"); }
+        else if (f.type === "radio") { valid = !!form.querySelector('input[name="' + f.name + '"]:checked'); target = f.closest(".choice-group"); }
+        else { valid = f.value.trim() !== "" && f.checkValidity(); target = f; }
+        target.classList.toggle("invalid", !valid);
+        if (!valid) ok = false;
+      });
+      return ok;
+    }
+    form.addEventListener("input", function (e) {
+      var t = e.target.type === "checkbox" ? e.target.closest(".consent") : e.target.type === "radio" ? e.target.closest(".choice-group") : e.target;
+      if (t && t.classList.contains("invalid")) validate();
+    });
 
-    if (!cfg.FORM_ENDPOINT) {
-      if (cfg.CONTACT_EMAIL) {
-        var body = "Name: " + data.name + "\nE-Mail: " + data.email + "\nSemester: " + data.semester +
-          "\nStudiengang: " + data.studiengang + "\n\n" + data.nachricht;
-        window.location.href = "mailto:" + cfg.CONTACT_EMAIL + "?subject=" +
-          encodeURIComponent(data._subject) + "&body=" + encodeURIComponent(body);
-        setStatus("Dein E-Mail-Programm öffnet sich – bitte sende die Nachricht dort ab.", "ok");
-      } else {
-        setStatus("Das Formular ist noch nicht eingerichtet. Bitte schreib uns vorerst über Instagram.", "err");
-      }
-      return;
+    function showSuccess(name) {
+      form.classList.add("sent");
+      form.innerHTML =
+        '<div class="success"><span class="big" aria-hidden="true">💛</span>' +
+        "<h3>" + escapeHtml(form.getAttribute("data-success-title") || "Danke, " + name.split(" ")[0] + "!") + "</h3>" +
+        "<p>" + escapeHtml(form.getAttribute("data-success")) + "</p>" +
+        '<p class="muted">' + T.insta + ' <a href="https://www.instagram.com/medipatenwitten.herdecke/" target="_blank" rel="noopener">@medipatenwitten.herdecke</a></p></div>';
     }
 
-    var btn = form.querySelector('button[type="submit"]');
-    btn.disabled = true;
-    btn.textContent = "Wird gesendet …";
-    setStatus("");
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      if (form.elements._gotcha.value) return; // Bot
+      if (!validate()) {
+        setStatus(T.required, "err");
+        var first = form.querySelector(".invalid");
+        if (first) (first.querySelector("input") || first).focus();
+        return;
+      }
 
-    fetch(cfg.FORM_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify(data)
-    }).then(function (res) {
-      if (!res.ok) throw new Error("HTTP " + res.status);
-      showSuccess(data.name);
-    }).catch(function () {
-      btn.disabled = false;
-      btn.textContent = "Anmeldung absenden";
-      setStatus("Das hat leider nicht geklappt. Bitte versuche es später erneut oder schreib uns über Instagram.", "err");
+      var data = { anliegen: form.getAttribute("data-topic") };
+      Array.prototype.forEach.call(form.elements, function (el) {
+        if (!el.name || el.name === "_gotcha" || el.name === "datenschutz") return;
+        if ((el.type === "radio" || el.type === "checkbox") && !el.checked) return;
+        data[el.name] = el.value.trim();
+      });
+      data.datenschutz = "zugestimmt";
+      data._subject = form.getAttribute("data-subject") + ": " + data.name;
+      data._replyto = data.email;
+      // Zusatzoptionen, die nur FormSubmit versteht
+      if (/formsubmit\.co/.test(cfg.FORM_ENDPOINT || "")) {
+        data._template = "table";
+        data._captcha = "false";
+      }
+
+      if (!cfg.FORM_ENDPOINT) {
+        if (cfg.CONTACT_EMAIL) {
+          var body = Object.keys(LABELS).filter(function (k) { return data[k]; })
+            .map(function (k) { return LABELS[k] + ": " + data[k]; }).join("\n");
+          window.location.href = "mailto:" + cfg.CONTACT_EMAIL + "?subject=" +
+            encodeURIComponent(data._subject) + "&body=" + encodeURIComponent(body);
+          setStatus("Dein E-Mail-Programm öffnet sich – bitte sende die Nachricht dort ab.", "ok");
+        } else {
+          setStatus("Das Formular ist noch nicht eingerichtet. Bitte schreib uns vorerst über Instagram.", "err");
+        }
+        return;
+      }
+
+      // Als Datei geöffnet (file://): Der Browser blockiert hier die Antwort von Formspree (CORS).
+      // Deshalb die Nachricht als klassisches Formular in einen unsichtbaren Rahmen schicken –
+      // Besucher:innen bleiben auf der Seite und sehen die normale Danke-Meldung.
+      if (location.protocol === "file:") {
+        var btnF = form.querySelector('button[type="submit"]');
+        btnF.disabled = true;
+        btnF.textContent = "Wird gesendet …";
+        var frameName = "fs-" + Date.now();
+        var frame = document.createElement("iframe");
+        frame.name = frameName; frame.hidden = true; frame.setAttribute("aria-hidden", "true");
+        var direct = document.createElement("form");
+        direct.method = "POST"; direct.action = cfg.FORM_ENDPOINT; direct.target = frameName; direct.hidden = true;
+        Object.keys(data).forEach(function (k) {
+          var input = document.createElement("input"); input.type = "hidden"; input.name = k; input.value = data[k]; direct.appendChild(input);
+        });
+        var done = false;
+        var finish = function () {
+          if (done) return; done = true;
+          showSuccess(data.name);
+          setTimeout(function () { frame.remove(); direct.remove(); }, 1000);
+        };
+        frame.addEventListener("load", finish);
+        setTimeout(finish, 6000); // Sicherheitsnetz, falls der Rahmen kein „load“ meldet
+        document.body.appendChild(frame); document.body.appendChild(direct);
+        direct.submit();
+        return;
+      }
+
+      var btn = form.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      btn.textContent = "Wird gesendet …";
+      setStatus("");
+
+      // FormData statt JSON: so empfiehlt es Formspree, und der Browser braucht keine Vorab-Anfrage
+      var body = new FormData();
+      Object.keys(data).forEach(function (k) { body.append(k, data[k]); });
+
+      fetch(cfg.FORM_ENDPOINT, {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: body
+      }).then(function (res) {
+        if (res.ok) return showSuccess(data.name);
+        // Formspree antwortet mit einer Begründung, z. B. bei abgelehnten Absendern
+        return res.json().catch(function () { return {}; }).then(function (j) {
+          var why = (j.errors || []).map(function (x) { return x.message; }).join(" ") || j.error || ("Fehlercode " + res.status);
+          var err = new Error(why); err.fromServer = true; throw err;
+        });
+      }).catch(function (err) {
+        btn.disabled = false;
+        btn.textContent = form.getAttribute("data-button");
+        if (err && err.fromServer) {
+          setStatus(T.failed + err.message, "err");
+        } else {
+          // Keine Antwort: Verbindung blockiert (z. B. Vorschau im Claude-Chat) oder offline
+          setStatus(T.offline, "err");
+        }
+      });
     });
-  });
+  }
+  document.querySelectorAll(".contact-form").forEach(setupForm);
 })();
