@@ -65,4 +65,4 @@ Im Abschnitt „Socials“ in `index.html` steht eine auskommentierte Vorlage f�
 
 ## Vor dem Livegang
 
-- In `datenschutz.html` die gelb markierten „Noch offen“-Punkte ergänzen (Speicherdauer) und die Kästen danach entfernen. Hoster (GitHub Pages) ist eingetragen. Das Impressum ist eingetragen (MEDI Paten e.V.).
+- Datenschutzerklärung ist vollständig (Hoster GitHub Pages, Formspree mit DPA, Speicherdauer). Vom Vorstand gegenlesen lassen. Das Impressum ist eingetragen (MEDI Paten e.V.).
