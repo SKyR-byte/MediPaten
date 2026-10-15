@@ -141,11 +141,13 @@
     var formal = form.hasAttribute("data-formal");
     var T = formal ? {
       required: "Bitte füllen Sie alle Pflichtfelder (*) aus.",
+      fileMode: "Diese Seite ist als Datei geöffnet. Ihre Nachricht wurde deshalb in einem neuen Tab direkt an Formspree übergeben – bitte schließen Sie den Vorgang dort ab. Auf der veröffentlichten Website geschieht das automatisch.",
       insta: "Bei Fragen erreichen Sie uns auch auf Instagram –",
       failed: "Formspree hat die Nachricht abgelehnt: ",
       offline: "Die Nachricht konnte nicht gesendet werden, weil keine Verbindung zu Formspree möglich war. In Vorschauen (z. B. im Claude-Chat) ist das blockiert – auf der veröffentlichten Website funktioniert es. Sonst prüfen Sie bitte Ihre Internetverbindung oder schreiben Sie uns über Instagram."
     } : {
       required: "Bitte fülle alle Pflichtfelder (*) aus.",
+      fileMode: "Diese Seite ist als Datei geöffnet. Deine Nachricht wurde deshalb in einem neuen Tab direkt an Formspree übergeben – bitte schließ den Vorgang dort ab. Auf der veröffentlichten Website geschieht das automatisch.",
       insta: "Bis dahin: Schau gern auf unserem Instagram-Profil vorbei –",
       failed: "Formspree hat die Nachricht abgelehnt: ",
       offline: "Die Nachricht konnte nicht gesendet werden, weil keine Verbindung zu Formspree möglich war. In Vorschauen (z. B. im Claude-Chat) ist das blockiert – auf der veröffentlichten Website funktioniert es. Sonst bitte Internetverbindung prüfen oder uns über Instagram schreiben."
@@ -218,15 +220,32 @@
         return;
       }
 
+      // Als Datei geöffnet (file://): Der Browser blockiert hier die Antwort von Formspree (CORS).
+      // Deshalb die Nachricht als klassisches Formular in einem neuen Tab direkt an Formspree übergeben.
+      if (location.protocol === "file:") {
+        var direct = document.createElement("form");
+        direct.method = "POST"; direct.action = cfg.FORM_ENDPOINT; direct.target = "_blank"; direct.hidden = true;
+        Object.keys(data).forEach(function (k) {
+          var input = document.createElement("input"); input.type = "hidden"; input.name = k; input.value = data[k]; direct.appendChild(input);
+        });
+        document.body.appendChild(direct); direct.submit(); direct.remove();
+        setStatus(T.fileMode, "ok");
+        return;
+      }
+
       var btn = form.querySelector('button[type="submit"]');
       btn.disabled = true;
       btn.textContent = "Wird gesendet …";
       setStatus("");
 
+      // FormData statt JSON: so empfiehlt es Formspree, und der Browser braucht keine Vorab-Anfrage
+      var body = new FormData();
+      Object.keys(data).forEach(function (k) { body.append(k, data[k]); });
+
       fetch(cfg.FORM_ENDPOINT, {
         method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify(data)
+        headers: { Accept: "application/json" },
+        body: body
       }).then(function (res) {
         if (res.ok) return showSuccess(data.name);
         // Formspree antwortet mit einer Begründung, z. B. bei abgelehnten Absendern
