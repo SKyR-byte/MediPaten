@@ -141,13 +141,11 @@
     var formal = form.hasAttribute("data-formal");
     var T = formal ? {
       required: "Bitte füllen Sie alle Pflichtfelder (*) aus.",
-      fileMode: "Diese Seite ist als Datei geöffnet. Ihre Nachricht wurde deshalb in einem neuen Tab direkt an Formspree übergeben – bitte schließen Sie den Vorgang dort ab. Auf der veröffentlichten Website geschieht das automatisch.",
       insta: "Bei Fragen erreichen Sie uns auch auf Instagram –",
       failed: "Formspree hat die Nachricht abgelehnt: ",
       offline: "Die Nachricht konnte nicht gesendet werden, weil keine Verbindung zu Formspree möglich war. In Vorschauen (z. B. im Claude-Chat) ist das blockiert – auf der veröffentlichten Website funktioniert es. Sonst prüfen Sie bitte Ihre Internetverbindung oder schreiben Sie uns über Instagram."
     } : {
       required: "Bitte fülle alle Pflichtfelder (*) aus.",
-      fileMode: "Diese Seite ist als Datei geöffnet. Deine Nachricht wurde deshalb in einem neuen Tab direkt an Formspree übergeben – bitte schließ den Vorgang dort ab. Auf der veröffentlichten Website geschieht das automatisch.",
       insta: "Bis dahin: Schau gern auf unserem Instagram-Profil vorbei –",
       failed: "Formspree hat die Nachricht abgelehnt: ",
       offline: "Die Nachricht konnte nicht gesendet werden, weil keine Verbindung zu Formspree möglich war. In Vorschauen (z. B. im Claude-Chat) ist das blockiert – auf der veröffentlichten Website funktioniert es. Sonst bitte Internetverbindung prüfen oder uns über Instagram schreiben."
@@ -221,15 +219,30 @@
       }
 
       // Als Datei geöffnet (file://): Der Browser blockiert hier die Antwort von Formspree (CORS).
-      // Deshalb die Nachricht als klassisches Formular in einem neuen Tab direkt an Formspree übergeben.
+      // Deshalb die Nachricht als klassisches Formular in einen unsichtbaren Rahmen schicken –
+      // Besucher:innen bleiben auf der Seite und sehen die normale Danke-Meldung.
       if (location.protocol === "file:") {
+        var btnF = form.querySelector('button[type="submit"]');
+        btnF.disabled = true;
+        btnF.textContent = "Wird gesendet …";
+        var frameName = "fs-" + Date.now();
+        var frame = document.createElement("iframe");
+        frame.name = frameName; frame.hidden = true; frame.setAttribute("aria-hidden", "true");
         var direct = document.createElement("form");
-        direct.method = "POST"; direct.action = cfg.FORM_ENDPOINT; direct.target = "_blank"; direct.hidden = true;
+        direct.method = "POST"; direct.action = cfg.FORM_ENDPOINT; direct.target = frameName; direct.hidden = true;
         Object.keys(data).forEach(function (k) {
           var input = document.createElement("input"); input.type = "hidden"; input.name = k; input.value = data[k]; direct.appendChild(input);
         });
-        document.body.appendChild(direct); direct.submit(); direct.remove();
-        setStatus(T.fileMode, "ok");
+        var done = false;
+        var finish = function () {
+          if (done) return; done = true;
+          showSuccess(data.name);
+          setTimeout(function () { frame.remove(); direct.remove(); }, 1000);
+        };
+        frame.addEventListener("load", finish);
+        setTimeout(finish, 6000); // Sicherheitsnetz, falls der Rahmen kein „load“ meldet
+        document.body.appendChild(frame); document.body.appendChild(direct);
+        direct.submit();
         return;
       }
 
