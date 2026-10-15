@@ -12,6 +12,8 @@ config.js           ← Formular-Empfänger hier eintragen
 impressum.html      Impressum des MEDI Paten e.V.
 datenschutz.html    Datenschutzerklärung (Entwurf, offene Punkte gelb markiert)
 assets/img/         Logos & Otter-Maskottchen
+assets/fonts/       Schriften (lokal eingebunden, SIL Open Font License)
+CNAME               Eigene Domain für GitHub Pages (medipatennrw.de)
 ```
 
 ## Lokal ansehen
@@ -46,10 +48,21 @@ Das Feld „anliegen“ in jeder Mail zeigt, aus welchem Reiter sie kommt.
 
 Im Abschnitt „Socials“ in `index.html` steht eine auskommentierte Vorlage für LinkedIn. Kommentarzeichen entfernen, Profil-Link eintragen und die Karte in das `<div class="social-grid">` verschieben – fertig. Weitere Plattformen nach demselben Muster.
 
-## Veröffentlichen
+## Veröffentlichen (GitHub Pages + medipatennrw.de)
 
-Z. B. kostenlos mit **GitHub Pages** (Repository → Settings → Pages → Branch wählen), Netlify oder Cloudflare Pages.
+1. Pull Request dieses Branches nach `main` mergen.
+2. Repository → **Settings → Pages** → Source „Deploy from a branch“, Branch `main`, Ordner `/ (root)` → Save.
+3. Unter **Custom domain** `medipatennrw.de` eintragen (die Datei `CNAME` ist bereits angelegt).
+4. Beim Domain-Anbieter (DNS):
+   - 4 × **A**-Eintrag für `@`: `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
+   - **CNAME** für `www` → `skyr-byte.github.io`
+5. Wenn GitHub die Domain erkennt: **Enforce HTTPS** anhaken.
+
+## Später etwas ändern
+
+- Datei auf GitHub öffnen (Branch `main`) → Stift-Symbol → ändern → „Commit changes“. Nach 1–2 Minuten ist die Änderung online.
+- Texte stehen in `index.html`, Farben/Design in `styles.css`, Formular-Empfänger in `config.js`.
 
 ## Vor dem Livegang
 
-- In `datenschutz.html` die gelb markierten „Noch offen“-Punkte ergänzen (Hoster, Formspree, Speicherdauer, ggf. Datenschutzbeauftragte:r) und die Kästen danach entfernen. Das Impressum ist eingetragen (MEDI Paten e.V.).
+- In `datenschutz.html` die gelb markierten „Noch offen“-Punkte ergänzen (Formspree, Speicherdauer, ggf. Datenschutzbeauftragte:r) und die Kästen danach entfernen. Hoster (GitHub Pages) ist eingetragen. Das Impressum ist eingetragen (MEDI Paten e.V.).
