@@ -553,6 +553,7 @@ p { margin: 0 0 1em; }
 .footer-links a { text-decoration: none; }
 .footer-links a:hover { color: var(--pink); }
 .copy { text-align: center; font-size: .85rem; color: rgba(255,255,255,.5); margin: 36px 0 0; }
+.credit { text-align: center; font-size: .78rem; color: rgba(255,255,255,.4); margin: 6px 0 0; letter-spacing: .02em; }
 
 /* ---------- Reveal on scroll ---------- */
 .reveal { opacity: 0; transform: translateY(26px); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1); }
