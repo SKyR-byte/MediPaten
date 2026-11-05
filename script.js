@@ -281,29 +281,84 @@
     }
 
     /* ---- Daten einsammeln ---- */
-    function collect(info) {
-      var scopes = steps.length ? (info ? [steps[0]] : steps) : [form];
-      var data = { anliegen: info ? form.getAttribute("data-topic-info") : form.getAttribute("data-topic") };
-      scopes.forEach(function (sc) {
-        sc.querySelectorAll("input, select, textarea").forEach(function (el) {
-          if (!el.name || el.name === "_gotcha") return;
-          if (el.closest(".info-only") && !info) return;
-          if (el.type === "radio" && !el.checked) return;
-          if (el.type === "checkbox") {
-            if (!el.checked) return;
-            if (el.name === "datenschutz") { data.datenschutz = "zugestimmt"; return; }
-            data[el.name] = data[el.name] ? data[el.name] + ", " + el.value : el.value;
-            return;
+    // Bereinigt Beschriftungen: ohne „*“, „(freiwillig)“, „(mehrere möglich)“
+    function clean(t) { return String(t || "").replace(/\((freiwillig[^)]*|mehrere möglich|wenn bekannt)\)|\*/g, "").replace(/\s+/g, " ").trim().replace(/[:?]$/, function (c) { return c; }); }
+
+    // Ein Steckbrief-Teil als gut lesbarer Text: Frage → Antwort, Teil für Teil
+    function sectionText(step) {
+      var lines = [];
+      step.querySelectorAll(".field, .choice-group, .confirm-group, .field-set, label.consent").forEach(function (u) {
+        if (u.closest(".confirm-group") && !u.classList.contains("confirm-group")) return; // Bestätigungen gehören zur Gruppe
+        if (u.matches(".field")) {
+          var el = u.querySelector("input, select, textarea"); if (!el) return;
+          var v = el.value.trim(); if (!v) return;
+          var lab = el.labels && el.labels[0] ? el.labels[0].textContent : el.name;
+          lines.push("• " + clean(lab) + "\n   → " + v.replace(/\n/g, "\n     "));
+        } else if (u.matches(".field-set")) {
+          var words = Array.prototype.map.call(u.querySelectorAll("input"), function (i) { return i.value.trim(); }).filter(Boolean);
+          if (words.length) lines.push("• " + clean(u.querySelector("legend").textContent) + "\n   → " + words.join(", "));
+        } else if (u.matches(".confirm-group")) {
+          var block = ["• " + clean(u.querySelector("legend").textContent)];
+          u.querySelectorAll("input[type=checkbox]").forEach(function (c) { block.push("   " + (c.checked ? "✓ " : "✗ ") + clean(c.parentNode.textContent)); });
+          lines.push(block.join("\n"));
+        } else if (u.matches(".choice-group")) {
+          var picked = Array.prototype.filter.call(u.querySelectorAll("input[type=radio], input[type=checkbox]"), function (i) { return i.checked; }).map(function (i) { return i.value; });
+          var other = u.querySelector(".choice-other"); if (other && other.value.trim()) picked.push("Sonstiges: " + other.value.trim());
+          if (!picked.length) return;
+          var ans = picked.join(", ");
+          if (u.classList.contains("scale")) {
+            var ends = u.querySelectorAll(".scale-end");
+            if (/^\d$/.test(ans)) ans += "  (1 = " + ends[0].textContent + " … 5 = " + ends[1].textContent + ")";
           }
-          var v = el.value.trim();
-          if (v !== "") data[el.name] = v;
-        });
+          lines.push("• " + clean(u.querySelector("legend").textContent) + "\n   → " + ans);
+        } else if (u.matches("label.consent")) {
+          var c = u.querySelector("input");
+          if (c.name === "datenschutz") return; // steht oben als eigenes Feld
+          lines.push("• " + (c.checked ? "✓ " : "✗ ") + clean(u.textContent));
+        }
       });
-      if (steps.length) data["Datum"] = new Date().toLocaleDateString("de-DE");
+      return lines.join("\n\n");
+    }
+
+    function collect(info) {
+      var data = { anliegen: info ? form.getAttribute("data-topic-info") : form.getAttribute("data-topic") };
+      var first = steps.length ? steps[0] : form;
+      // Kontaktdaten (erster Schritt bzw. einfaches Formular) als einzelne Felder
+      first.querySelectorAll("input, select, textarea").forEach(function (el) {
+        if (!el.name || el.name === "_gotcha") return;
+        if (el.closest(".info-only") && !info) return;
+        if (el.type === "radio" && !el.checked) return;
+        if (el.type === "checkbox") {
+          if (!el.checked) return;
+          if (el.name === "datenschutz") { data.datenschutz = "zugestimmt"; return; }
+          data[el.name] = data[el.name] ? data[el.name] + ", " + el.value : el.value;
+          return;
+        }
+        var v = el.value.trim();
+        if (v !== "") data[el.name] = v;
+      });
+      if (steps.length) {
+        data["Datum"] = new Date().toLocaleDateString("de-DE");
+        if (!info) {
+          // Jeder Steckbrief-Teil wird ein Abschnitt mit Überschrift
+          steps.slice(1).forEach(function (st) {
+            var num = st.querySelector(".step-num"), title = st.getAttribute("data-step-title");
+            var key = (num ? num.textContent + " · " : "") + title;
+            var txt = sectionText(st);
+            data[key] = txt || "(keine Angaben)";
+          });
+          var cons = form.querySelector('.wz-step:last-of-type input[name="datenschutz"]');
+          if (cons && cons.checked) data.datenschutz = "zugestimmt";
+        }
+      }
       data._subject = (info ? form.getAttribute("data-subject-info") : form.getAttribute("data-subject")) + ": " + data.name;
       data._replyto = data.email;
       if (/formsubmit\.co/.test(cfg.FORM_ENDPOINT || "")) { data._template = "table"; data._captcha = "false"; }
-      return data;
+      // verständliche Feldnamen für die E-Mail
+      var NAMES = { anliegen: "Anliegen", name: "Name", telefon: "Telefon", klinik: "Klinik / Standort", interesse: "Interesse", datenschutz: "Datenschutz", taetigkeit: "Studiengang oder Beruf", bereich: "Bereich", stadt: "Stadt", uni_klinik: "Uni / Klinik", nachricht: "Nachricht" };
+      var out = {};
+      Object.keys(data).forEach(function (k) { out[NAMES[k] || k] = data[k]; });
+      return out;
     }
 
     form.addEventListener("submit", function (e) {
@@ -337,7 +392,7 @@
         var done = false;
         var finish = function () {
           if (done) return; done = true;
-          showSuccess(data.name);
+          showSuccess(data.Name);
           setTimeout(function () { frame.remove(); direct.remove(); }, 1000);
         };
         frame.addEventListener("load", finish);
@@ -352,7 +407,7 @@
       Object.keys(data).forEach(function (k) { body.append(k, data[k]); });
       fetch(cfg.FORM_ENDPOINT, { method: "POST", headers: { Accept: "application/json" }, body: body })
         .then(function (r) {
-          if (r.ok) return showSuccess(data.name);
+          if (r.ok) return showSuccess(data.Name);
           return r.json().catch(function () { return {}; }).then(function (j) {
             var why = (j.errors || []).map(function (x) { return x.message; }).join(" ") || j.error || ("Fehlercode " + r.status);
             var err = new Error(why); err.fromServer = true; throw err;
