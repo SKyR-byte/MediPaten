@@ -125,27 +125,38 @@
     a.addEventListener("click", function () { openTab("signup"); });
   });
 
-  /* ---------- Kontaktformular: Absenden ---------- */
+  /* ---------- Kontaktformular: Absenden (mit Steckbrief in Schritten) ---------- */
   var cfg = window.MEDIPATEN_CONFIG || {};
-  var LABELS = { name: "Name", email: "E-Mail", telefon: "Telefon", semester: "Semester", studiengang: "Studiengang", alter: "Alter", alter_kind: "Alter des Kindes", sprachen: "Sprache(n)", klinik: "Klinik / Standort", interesse: "Interesse", taetigkeit: "Studiengang/Beruf", bereich: "Bereich", stadt: "Stadt", uni_klinik: "Uni / Klinik", nachricht: "Nachricht" };
 
   function escapeHtml(s) {
-    return s.replace(/[&<>"']/g, function (c) {
+    return String(s).replace(/[&<>"']/g, function (c) {
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
     });
+  }
+  // Ist ein Element gerade sichtbar (nicht in einem versteckten Schritt/Bereich)?
+  function shown(el) { return !el.closest("[hidden]"); }
+  function labelText(el) {
+    var t = "";
+    if (el.getAttribute("data-label")) return el.getAttribute("data-label");
+    if (el.labels && el.labels[0]) t = el.labels[0].textContent;
+    else if (el.getAttribute("aria-label")) t = el.getAttribute("aria-label");
+    return t.replace(/\(freiwillig[^)]*\)|\(mehrere möglich\)|\*/g, "").replace(/\s+/g, " ").trim();
+  }
+  function legendText(fs) {
+    var l = fs.querySelector("legend");
+    return l ? l.textContent.replace(/\(freiwillig[^)]*\)|\(mehrere möglich\)|\*/g, "").replace(/\s+/g, " ").trim() : "";
   }
 
   function setupForm(form) {
     var status = form.querySelector(".form-status");
-    // Eltern werden gesiezt, Studierende geduzt
-    var formal = form.hasAttribute("data-formal");
+    var formal = form.hasAttribute("data-formal"); // Eltern werden gesiezt, Studierende geduzt
     var T = formal ? {
-      required: "Bitte füllen Sie alle Pflichtfelder (*) aus.",
+      missing: "Bitte ergänzen Sie noch: ",
       insta: "Bei Fragen erreichen Sie uns auch auf Instagram –",
       failed: "Formspree hat die Nachricht abgelehnt: ",
       offline: "Die Nachricht konnte nicht gesendet werden, weil keine Verbindung zu Formspree möglich war. In Vorschauen (z. B. im Claude-Chat) ist das blockiert – auf der veröffentlichten Website funktioniert es. Sonst prüfen Sie bitte Ihre Internetverbindung oder schreiben Sie uns über Instagram."
     } : {
-      required: "Bitte fülle alle Pflichtfelder (*) aus.",
+      missing: "Bitte ergänze noch: ",
       insta: "Bis dahin: Schau gern auf unserem Instagram-Profil vorbei –",
       failed: "Formspree hat die Nachricht abgelehnt: ",
       offline: "Die Nachricht konnte nicht gesendet werden, weil keine Verbindung zu Formspree möglich war. In Vorschauen (z. B. im Claude-Chat) ist das blockiert – auf der veröffentlichten Website funktioniert es. Sonst bitte Internetverbindung prüfen oder uns über Instagram schreiben."
@@ -154,77 +165,167 @@
       status.textContent = msg;
       status.className = "form-status" + (type ? " " + type : "");
     }
-    function validate() {
-      var ok = true;
-      form.querySelectorAll("[required]").forEach(function (f) {
-        var valid, target;
-        if (f.type === "checkbox") { valid = f.checked; target = f.closest(".consent"); }
-        else if (f.type === "radio") { valid = !!form.querySelector('input[name="' + f.name + '"]:checked'); target = f.closest(".choice-group"); }
-        else { valid = f.value.trim() !== "" && f.checkValidity(); target = f; }
-        target.classList.toggle("invalid", !valid);
-        if (!valid) ok = false;
+
+    /* ---- Prüfen: liefert die Namen der fehlenden Angaben im Bereich ---- */
+    function check(scope, mark) {
+      var missing = [], firstBad = null;
+      function bad(target, name, focusEl) {
+        if (mark) target.classList.add("invalid");
+        if (missing.indexOf(name) < 0) missing.push(name);
+        if (!firstBad) firstBad = focusEl || target;
+      }
+      function good(target) { if (mark) target.classList.remove("invalid"); }
+      // Textfelder, Auswahllisten, Zahlen, E-Mail
+      scope.querySelectorAll("input[required]:not([type=checkbox]):not([type=radio]), select[required], textarea[required]").forEach(function (f) {
+        if (!shown(f)) return;
+        if (f.value.trim() === "" || !f.checkValidity()) bad(f, labelText(f), f); else good(f);
       });
-      return ok;
+      // Auswahlknöpfe (genau eine Antwort)
+      var seen = {};
+      scope.querySelectorAll("input[type=radio][required]").forEach(function (r) {
+        if (!shown(r) || seen[r.name]) return; seen[r.name] = 1;
+        var group = r.closest(".choice-group");
+        if (!form.querySelector('input[name="' + r.name + '"]:checked')) bad(group, legendText(group), r); else good(group);
+      });
+      // Ankreuzfelder mit Mindestanzahl
+      scope.querySelectorAll(".choice-group[data-min]").forEach(function (g) {
+        if (!shown(g)) return;
+        var n = g.querySelectorAll("input[type=checkbox]:checked").length;
+        if (n < +g.getAttribute("data-min")) bad(g, legendText(g), g.querySelector("input")); else good(g);
+      });
+      // Einzelne Pflicht-Häkchen (Bestätigungen, Einwilligungen)
+      scope.querySelectorAll("input[type=checkbox][required]").forEach(function (c) {
+        if (!shown(c)) return;
+        var box = c.closest(".consent") || c.parentNode;
+        var grp = c.closest(".confirm-group");
+        var name = grp ? legendText(grp) : c.name === "datenschutz" ? "Einverständnis zum Datenschutz" : /^Einwilligung/.test(c.name) ? "Einwilligung zu den Angaben über Ihr Kind" : "Bestätigung";
+        if (!c.checked) bad(box, name, c); else good(box);
+      });
+      return { ok: missing.length === 0, missing: missing, first: firstBad };
     }
-    form.addEventListener("input", function (e) {
-      var t = e.target.type === "checkbox" ? e.target.closest(".consent") : e.target.type === "radio" ? e.target.closest(".choice-group") : e.target;
-      if (t && t.classList.contains("invalid")) validate();
-    });
+    function report(res) {
+      setStatus(T.missing + res.missing.join(" · "), "err");
+      if (res.first) {
+        res.first.scrollIntoView({ behavior: "smooth", block: "center" });
+        try { res.first.focus({ preventScroll: true }); } catch (e) { res.first.focus(); }
+      }
+    }
+    // Fehler-Markierung verschwindet, sobald das Feld korrigiert ist
+    function fixed(t) {
+      if (t.matches("input, select, textarea")) return t.value.trim() !== "" && t.checkValidity();
+      if (t.hasAttribute("data-min")) return t.querySelectorAll("input[type=checkbox]:checked").length >= +t.getAttribute("data-min");
+      if (t.classList.contains("choice-group")) return !!t.querySelector("input[type=radio]:checked");
+      var c = t.querySelector("input[type=checkbox]");
+      return c ? c.checked : true;
+    }
+    function onFix(e) {
+      var t = e.target.classList.contains("invalid") ? e.target : e.target.closest(".invalid");
+      if (t && fixed(t)) t.classList.remove("invalid");
+      if (!form.querySelector(".invalid")) setStatus("");
+    }
+    form.addEventListener("input", onFix);
+    form.addEventListener("change", onFix);
+
+    /* ---- Schritte ---- */
+    var steps = Array.prototype.slice.call(form.querySelectorAll(".wz-step"));
+    var idx = 0;
+    var progress = form.querySelector(".wizard-progress");
+    var back = form.querySelector(".step-back"), next = form.querySelector(".step-next"), submit = form.querySelector('button[type="submit"]');
+    var infoOnly = form.querySelector(".info-only");
+    function infoMode() {
+      var r = form.querySelector('input[name="interesse"]:checked');
+      return !!(r && /Informationen/.test(r.value));
+    }
+    function render() {
+      if (!steps.length) return;
+      var info = infoMode() && idx === 0;
+      steps.forEach(function (st, k) { st.hidden = k !== idx; });
+      if (infoOnly) infoOnly.hidden = !info;
+      var last = idx === steps.length - 1;
+      back.hidden = idx === 0;
+      next.hidden = last || info;
+      submit.hidden = !(last || info);
+      next.textContent = idx === 0 ? (form.getAttribute("data-first-next") || "Weiter") : "Weiter";
+      submit.textContent = info ? form.getAttribute("data-button-info") : form.getAttribute("data-button");
+      var total = info ? 1 : steps.length;
+      progress.querySelector(".wizard-bar span").style.width = (info ? 100 : Math.round((idx + 1) / steps.length * 100)) + "%";
+      progress.querySelector(".wizard-label").textContent = "Schritt " + (idx + 1) + " von " + total + " · " + steps[idx].getAttribute("data-step-title");
+    }
+    function goTo(k) {
+      idx = k; render(); setStatus("");
+      var card = form.closest(".contact-card") || form;
+      var top = card.getBoundingClientRect().top + window.scrollY - 90;
+      if (window.scrollY > top) window.scrollTo({ top: top, behavior: "smooth" });
+    }
+    if (steps.length) {
+      next.addEventListener("click", function () {
+        var res = check(steps[idx], true);
+        if (!res.ok) return report(res);
+        goTo(idx + 1);
+      });
+      back.addEventListener("click", function () { goTo(idx - 1); });
+      form.addEventListener("change", function (e) { if (e.target.name === "interesse") render(); });
+      render();
+    }
 
     function showSuccess(name) {
+      var card = form.closest(".contact-card") || form;
       form.classList.add("sent");
       form.innerHTML =
         '<div class="success"><span class="big" aria-hidden="true">💛</span>' +
-        "<h3>" + escapeHtml(form.getAttribute("data-success-title") || "Danke, " + name.split(" ")[0] + "!") + "</h3>" +
+        "<h3>" + escapeHtml(form.getAttribute("data-success-title") || "Danke, " + String(name).split(" ")[0] + "!") + "</h3>" +
         "<p>" + escapeHtml(form.getAttribute("data-success")) + "</p>" +
         '<p class="muted">' + T.insta + ' <a href="https://www.instagram.com/medipatenwitten.herdecke/" target="_blank" rel="noopener">@medipatenwitten.herdecke</a></p></div>';
+      var top = card.getBoundingClientRect().top + window.scrollY - 90;
+      if (window.scrollY > top) window.scrollTo({ top: top, behavior: "smooth" });
+    }
+
+    /* ---- Daten einsammeln ---- */
+    function collect(info) {
+      var scopes = steps.length ? (info ? [steps[0]] : steps) : [form];
+      var data = { anliegen: info ? form.getAttribute("data-topic-info") : form.getAttribute("data-topic") };
+      scopes.forEach(function (sc) {
+        sc.querySelectorAll("input, select, textarea").forEach(function (el) {
+          if (!el.name || el.name === "_gotcha") return;
+          if (el.closest(".info-only") && !info) return;
+          if (el.type === "radio" && !el.checked) return;
+          if (el.type === "checkbox") {
+            if (!el.checked) return;
+            if (el.name === "datenschutz") { data.datenschutz = "zugestimmt"; return; }
+            data[el.name] = data[el.name] ? data[el.name] + ", " + el.value : el.value;
+            return;
+          }
+          var v = el.value.trim();
+          if (v !== "") data[el.name] = v;
+        });
+      });
+      if (steps.length) data["Datum"] = new Date().toLocaleDateString("de-DE");
+      data._subject = (info ? form.getAttribute("data-subject-info") : form.getAttribute("data-subject")) + ": " + data.name;
+      data._replyto = data.email;
+      if (/formsubmit\.co/.test(cfg.FORM_ENDPOINT || "")) { data._template = "table"; data._captcha = "false"; }
+      return data;
     }
 
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       if (form.elements._gotcha.value) return; // Bot
-      if (!validate()) {
-        setStatus(T.required, "err");
-        var first = form.querySelector(".invalid");
-        if (first) (first.querySelector("input") || first).focus();
-        return;
-      }
-
-      var data = { anliegen: form.getAttribute("data-topic") };
-      Array.prototype.forEach.call(form.elements, function (el) {
-        if (!el.name || el.name === "_gotcha" || el.name === "datenschutz") return;
-        if ((el.type === "radio" || el.type === "checkbox") && !el.checked) return;
-        data[el.name] = el.value.trim();
-      });
-      data.datenschutz = "zugestimmt";
-      data._subject = form.getAttribute("data-subject") + ": " + data.name;
-      data._replyto = data.email;
-      // Zusatzoptionen, die nur FormSubmit versteht
-      if (/formsubmit\.co/.test(cfg.FORM_ENDPOINT || "")) {
-        data._template = "table";
-        data._captcha = "false";
-      }
+      var info = steps.length && infoMode() && idx === 0;
+      if (steps.length && !info && idx !== steps.length - 1) return; // Enter-Taste mitten im Steckbrief
+      var res = check(steps.length ? steps[idx] : form, true);
+      if (!res.ok) return report(res);
+      var data = collect(info);
 
       if (!cfg.FORM_ENDPOINT) {
-        if (cfg.CONTACT_EMAIL) {
-          var body = Object.keys(LABELS).filter(function (k) { return data[k]; })
-            .map(function (k) { return LABELS[k] + ": " + data[k]; }).join("\n");
-          window.location.href = "mailto:" + cfg.CONTACT_EMAIL + "?subject=" +
-            encodeURIComponent(data._subject) + "&body=" + encodeURIComponent(body);
-          setStatus("Dein E-Mail-Programm öffnet sich – bitte sende die Nachricht dort ab.", "ok");
-        } else {
-          setStatus("Das Formular ist noch nicht eingerichtet. Bitte schreib uns vorerst über Instagram.", "err");
-        }
+        setStatus("Das Formular ist noch nicht eingerichtet. Bitte schreib uns vorerst über Instagram.", "err");
         return;
       }
+      submit.disabled = true;
+      submit.textContent = "Wird gesendet …";
+      setStatus("");
 
       // Als Datei geöffnet (file://): Der Browser blockiert hier die Antwort von Formspree (CORS).
-      // Deshalb die Nachricht als klassisches Formular in einen unsichtbaren Rahmen schicken –
-      // Besucher:innen bleiben auf der Seite und sehen die normale Danke-Meldung.
+      // Deshalb die Nachricht als klassisches Formular in einen unsichtbaren Rahmen schicken.
       if (location.protocol === "file:") {
-        var btnF = form.querySelector('button[type="submit"]');
-        btnF.disabled = true;
-        btnF.textContent = "Wird gesendet …";
         var frameName = "fs-" + Date.now();
         var frame = document.createElement("iframe");
         frame.name = frameName; frame.hidden = true; frame.setAttribute("aria-hidden", "true");
@@ -240,42 +341,29 @@
           setTimeout(function () { frame.remove(); direct.remove(); }, 1000);
         };
         frame.addEventListener("load", finish);
-        setTimeout(finish, 6000); // Sicherheitsnetz, falls der Rahmen kein „load“ meldet
+        setTimeout(finish, 6000);
         document.body.appendChild(frame); document.body.appendChild(direct);
         direct.submit();
         return;
       }
 
-      var btn = form.querySelector('button[type="submit"]');
-      btn.disabled = true;
-      btn.textContent = "Wird gesendet …";
-      setStatus("");
-
       // FormData statt JSON: so empfiehlt es Formspree, und der Browser braucht keine Vorab-Anfrage
       var body = new FormData();
       Object.keys(data).forEach(function (k) { body.append(k, data[k]); });
-
-      fetch(cfg.FORM_ENDPOINT, {
-        method: "POST",
-        headers: { Accept: "application/json" },
-        body: body
-      }).then(function (res) {
-        if (res.ok) return showSuccess(data.name);
-        // Formspree antwortet mit einer Begründung, z. B. bei abgelehnten Absendern
-        return res.json().catch(function () { return {}; }).then(function (j) {
-          var why = (j.errors || []).map(function (x) { return x.message; }).join(" ") || j.error || ("Fehlercode " + res.status);
-          var err = new Error(why); err.fromServer = true; throw err;
+      fetch(cfg.FORM_ENDPOINT, { method: "POST", headers: { Accept: "application/json" }, body: body })
+        .then(function (r) {
+          if (r.ok) return showSuccess(data.name);
+          return r.json().catch(function () { return {}; }).then(function (j) {
+            var why = (j.errors || []).map(function (x) { return x.message; }).join(" ") || j.error || ("Fehlercode " + r.status);
+            var err = new Error(why); err.fromServer = true; throw err;
+          });
+        })
+        .catch(function (err) {
+          submit.disabled = false;
+          render();
+          if (!steps.length) submit.textContent = form.getAttribute("data-button");
+          setStatus(err && err.fromServer ? T.failed + err.message : T.offline, "err");
         });
-      }).catch(function (err) {
-        btn.disabled = false;
-        btn.textContent = form.getAttribute("data-button");
-        if (err && err.fromServer) {
-          setStatus(T.failed + err.message, "err");
-        } else {
-          // Keine Antwort: Verbindung blockiert (z. B. Vorschau im Claude-Chat) oder offline
-          setStatus(T.offline, "err");
-        }
-      });
     });
   }
   document.querySelectorAll(".contact-form").forEach(setupForm);
