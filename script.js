@@ -15,15 +15,35 @@
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 
-  toggle.addEventListener("click", function () {
-    var open = header.classList.toggle("open");
+  function setMenu(open) {
+    header.classList.toggle("open", open);
     toggle.setAttribute("aria-expanded", open ? "true" : "false");
     toggle.setAttribute("aria-label", open ? "Menü schließen" : "Menü öffnen");
+  }
+  toggle.addEventListener("click", function (e) {
+    e.preventDefault();
+    setMenu(!header.classList.contains("open"));
   });
-  document.querySelectorAll(".main-nav a, .btn-header").forEach(function (a) {
-    a.addEventListener("click", function () {
-      header.classList.remove("open");
-      toggle.setAttribute("aria-expanded", "false");
+  // Tippen außerhalb des offenen Menüs schließt es
+  document.addEventListener("click", function (e) {
+    if (header.classList.contains("open") && !header.contains(e.target)) setMenu(false);
+  });
+
+  /* ---------- Sprung-Links (Menü, „Pat:in werden“ …) ----------
+     Wir scrollen selbst, statt uns auf den Browser zu verlassen –
+     das ist auf dem iPhone (Safari, Instagram-Browser) zuverlässiger. */
+  document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      var id = a.getAttribute("href").slice(1);
+      var target = id ? document.getElementById(id) : null;
+      setMenu(false);
+      if (!target && id !== "top") return;
+      e.preventDefault();
+      var offset = header.getBoundingClientRect().height + 12;
+      var y = id === "top" ? 0 : target.getBoundingClientRect().top + window.pageYOffset - offset;
+      try { window.scrollTo({ top: Math.max(0, y), behavior: reduceMotion ? "auto" : "smooth" }); }
+      catch (err) { window.scrollTo(0, Math.max(0, y)); }
+      if (history.replaceState) history.replaceState(null, "", "#" + id);
     });
   });
 

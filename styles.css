@@ -51,8 +51,11 @@ body {
   color: var(--ink);
   background: var(--bg);
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
 }
+/* Seitliches Wackeln verhindern, ohne einen eigenen Scroll-Bereich zu erzeugen
+   (overflow-x: hidden auf body stört auf dem iPhone die feste Kopfleiste) */
+html { overflow-x: hidden; }
+@supports (overflow: clip) { html { overflow-x: visible; } body { overflow-x: clip; } }
 img { max-width: 100%; display: block; }
 a { color: inherit; }
 h1, h2, h3, h4 { line-height: 1.15; margin: 0 0 .6em; }
@@ -89,6 +92,8 @@ p { margin: 0 0 1em; }
   background: #fff;
   border-bottom: 1px solid var(--line);
   transition: box-shadow .25s ease;
+  /* eigene Ebene: auf dem iPhone kommen Tipps sonst teils nicht an */
+  -webkit-transform: translateZ(0); transform: translateZ(0);
 }
 .site-header.scrolled { box-shadow: 0 6px 24px rgba(18,48,94,.08); }
 .header-inner { display: flex; align-items: center; gap: 22px; height: var(--header-h); width: min(1400px, 100% - 32px); }
@@ -106,7 +111,9 @@ p { margin: 0 0 1em; }
 .main-nav a::after { content: ""; position: absolute; left: 0; bottom: -2px; height: 3px; width: 100%; border-radius: 3px; background: var(--teal); transform: scaleX(0); transform-origin: left; transition: transform .25s ease; }
 .main-nav a:hover::after, .main-nav a.active::after { transform: scaleX(1); }
 .btn-header { padding: .6em 1.25em; white-space: nowrap; flex-shrink: 0; }
-.nav-toggle { display: none; background: none; border: 0; padding: 8px; cursor: pointer; }
+.nav-toggle { display: none; background: none; border: 0; padding: 8px; cursor: pointer; position: relative; z-index: 2; color: inherit; -webkit-appearance: none; appearance: none; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+.nav-toggle span { pointer-events: none; }
+.btn-header, .main-nav a { touch-action: manipulation; }
 .nav-toggle span { display: block; width: 24px; height: 2.5px; border-radius: 2px; background: var(--navy); margin: 5px 0; transition: transform .25s, opacity .25s; }
 
 /* ---------- Sections ---------- */
