@@ -37,7 +37,7 @@
     </nav>
 
     <a href="#mitmachen" class="btn btn-primary btn-header">Pat:in werden</a>
-    <button class="nav-toggle" aria-label="Menü öffnen" aria-expanded="false" aria-controls="main-nav">
+    <button type="button" class="nav-toggle" aria-label="Menü öffnen" aria-expanded="false" aria-controls="main-nav">
       <span></span><span></span><span></span>
     </button>
   </div>
@@ -295,7 +295,7 @@
         </details>
         <details>
           <summary>Wie laufen Matching und erstes Kennenlernen ab?</summary>
-          <p>Nach Ihrer Anfrage sprechen wir persönlich mit Ihnen über die Wünsche Ihres Kindes, Ihren Alltag und die Rahmenbedingungen. Danach suchen wir eine Studentin oder einen Studenten, die oder der gut zu Ihrem Kind passt. Beim ersten Treffen lernen sich Kind, Familie und MediPate kennen und überlegen gemeinsam, wie sie die Zeit gestalten möchten. Die Patenschaft beginnt erst, wenn es für alle passt.</p>
+          <p>Nachdem Sie den Steckbrief ausgefüllt haben, treten wir mit Ihnen in Kontakt und sprechen persönlich mit Ihnen über die Wünsche Ihres Kindes, Ihren Alltag und die Rahmenbedingungen. Danach suchen wir eine Studentin oder einen Studenten, die oder der gut zu Ihrem Kind passt. Beim ersten Treffen lernen sich Kind, Familie und MediPate kennen und überlegen gemeinsam, wie sie die Zeit gestalten möchten. Die Patenschaft beginnt erst, wenn es für alle passt.</p>
         </details>
         <details>
           <summary>Wie häufig finden Treffen statt?</summary>
@@ -551,111 +551,603 @@
         <button type="button" class="form-tab" role="tab" id="tab-standort" aria-controls="standort-form" aria-selected="false" tabindex="-1">Dein Standort fehlt?</button>
       </div>
 
-      <!-- Reiter 1: Pat:in werden -->
-      <form class="contact-form" id="signup" role="tabpanel" aria-labelledby="tab-signup" novalidate
-            data-topic="Pat:in werden" data-subject="Neue MEDIPATEN-Anmeldung"
-            data-button="Anmeldung absenden"
-            data-success="Deine Anmeldung ist bei uns angekommen. Wir melden uns bald persönlich bei dir.">
-        <div class="field">
-          <label for="f-name">Vor- und Nachname *</label>
-          <input id="f-name" name="name" type="text" autocomplete="name" required>
+      <!-- Reiter 1: Pat:in werden – Kontakt + Steckbrief in Schritten -->
+      <form class="contact-form wizard" id="signup" role="tabpanel" aria-labelledby="tab-signup" novalidate
+            data-topic="Pat:in werden – Steckbrief" data-subject="Neuer Steckbrief MEDI-Pat:in"
+            data-button="Steckbrief absenden" data-first-next="Weiter zum Steckbrief"
+            data-success="Dein Steckbrief ist bei uns angekommen. Wir melden uns bald persönlich bei dir.">
+        <div class="wizard-progress" aria-live="polite">
+          <div class="wizard-bar"><span></span></div>
+          <p class="wizard-label"></p>
         </div>
-        <div class="field">
-          <label for="f-email">E-Mail-Adresse *</label>
-          <input id="f-email" name="email" type="email" autocomplete="email" required>
-        </div>
-        <div class="field-row">
+        <section class="wz-step" data-step-title="Kontakt">
+          <div class="step-head"><h4>Kontakt</h4></div>
+          <p class="step-intro">Trag zuerst deine Kontaktdaten ein. Danach füllst du Schritt für Schritt deinen Steckbrief aus – damit wir dich gut mit einem Kind matchen können.</p>
           <div class="field">
-            <label for="f-semester">Fachsemester *</label>
-            <select id="f-semester" name="semester" required>
-              <option value="" disabled selected>Bitte wählen</option>
-              <option>1</option><option>2</option><option>3</option><option>4</option>
-              <option>5</option><option>6</option><option>7</option><option>8</option>
-              <option>9</option><option>10</option><option>11</option><option>12</option>
-              <option>13 oder höher</option>
-            </select>
+            <label for="p1">Vor- und Nachname *</label>
+            <input id="p1" name="name" type="text" required autocomplete="name">
           </div>
           <div class="field">
-            <label for="f-studiengang">Studiengang *</label>
-            <select id="f-studiengang" name="studiengang" required>
-              <option value="Humanmedizin" selected>Humanmedizin</option>
-            </select>
+            <label for="p2">E-Mail-Adresse *</label>
+            <input id="p2" name="email" type="email" required autocomplete="email">
           </div>
-        </div>
-        <div class="field-row">
+        </section>
+        <section class="wz-step" data-step-title="Fakten über mich" hidden>
+          <div class="step-head"><span class="step-num">01</span><h4>Fakten über mich</h4></div>
+          <p class="step-intro">Schön, dass du dabei bist! 💛 Mit deiner Patenschaft möchtest du ein Kind während eines längeren Krankenhausaufenthalts begleiten, ihm Zeit schenken und für schöne gemeinsame Momente sorgen. Damit wir dich mit einem Kind matchen können, möchten wir dich ein bisschen kennenlernen. Fülle dazu bitte die folgenden Fragen gewissenhaft aus.</p>
+          <div class="field-row">
           <div class="field">
-            <label for="f-alter">Alter <span class="opt">(optional)</span></label>
-            <input id="f-alter" name="alter" type="number" min="16" max="99" inputmode="numeric" placeholder="z. B. 23">
+            <label for="p3">Alter *</label>
+            <input id="p3" name="01 Alter" type="number" required placeholder="z. B. 23" min="16" max="99" inputmode="numeric">
           </div>
           <div class="field">
-            <label for="f-sprachen">Gesprochene Sprache(n) <span class="opt">(optional)</span></label>
-            <input id="f-sprachen" name="sprachen" type="text" placeholder="z. B. Deutsch, Englisch, Türkisch">
+            <label for="p4">Geschlecht *</label>
+            <select id="p4" name="01 Geschlecht" required><option value="" disabled selected>Bitte wählen</option><option>weiblich</option><option>männlich</option><option>divers</option><option>keine Angabe</option></select>
           </div>
-        </div>
-        <div class="field">
-          <label for="f-msg">Erzähl uns gern etwas über dich <span class="opt">(optional)</span></label>
-          <textarea id="f-msg" name="nachricht" rows="4" placeholder="Was motiviert dich? Hast du schon Erfahrung mit Kindern?"></textarea>
-        </div>
-        <!-- Spam-Schutz (für Menschen unsichtbar) -->
+          </div>
+          <div class="field">
+            <label for="p5">Pronomen <span class="opt">(freiwillig)</span></label>
+            <input id="p5" name="01 Pronomen" type="text" placeholder="z. B. sie/ihr, er/ihm, they/them">
+          </div>
+          <div class="field-row">
+          <div class="field">
+            <label for="p6">Studiengang *</label>
+            <select id="p6" name="01 Studiengang" required><option>Humanmedizin</option></select>
+          </div>
+          <div class="field">
+            <label for="p7">Fachsemester *</label>
+            <select id="p7" name="01 Fachsemester" required><option value="" disabled selected>Bitte wählen</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13 oder höher</option></select>
+          </div>
+          </div>
+          <div class="field">
+            <label for="p8">Bevorzugter Klinikstandort *</label>
+            <p class="field-hint">Aktuelle Möglichkeiten: Gemeinschaftskrankenhaus Herdecke</p>
+            <select id="p8" name="01 Bevorzugter Klinikstandort" required><option>Gemeinschaftskrankenhaus Herdecke</option></select>
+          </div>
+          <div class="field">
+            <label for="p9">Welche Sprachen sprichst du sicher genug, um mit einem Kind zu spielen oder zu sprechen? *</label>
+            <input id="p9" name="01 Sprachen" type="text" required placeholder="z. B. Deutsch, Englisch, Türkisch" data-label="Sprachen">
+          </div>
+          <div class="field">
+            <label for="p10">Ab wann bist du verfügbar? Gibt es Prüfungen, Praktika oder andere absehbare Unterbrechungen, die du bereits mitteilen kannst? *</label>
+            <textarea id="p10" name="01 Verfügbarkeit" rows="3" required data-label="Verfügbarkeit" placeholder="z. B. ab Mitte November, Prüfungsphase im Februar"></textarea>
+          </div>
+        </section>
+        <section class="wz-step" data-step-title="Das bin ich als Mensch" hidden>
+          <div class="step-head"><span class="step-num">02</span><h4>Das bin ich als Mensch</h4></div>
+          <fieldset class="field-set">
+            <legend>Wie würdest du dich in drei Worten beschreiben? <span class="opt">(freiwillig)</span></legend>
+            <div class="three-words">
+              <input name="02 Drei Worte 1" type="text" aria-label="Wort 1" placeholder="1.">
+              <input name="02 Drei Worte 2" type="text" aria-label="Wort 2" placeholder="2.">
+              <input name="02 Drei Worte 3" type="text" aria-label="Wort 3" placeholder="3.">
+            </div>
+          </fieldset>
+          <div class="field">
+            <label for="p11">Was machst du gerne in deiner Freizeit? <span class="opt">(freiwillig)</span></label>
+            <input id="p11" name="02 Freizeit" type="text">
+          </div>
+          <div class="field">
+            <label for="p12">Was bringt dich zum Lachen? <span class="opt">(freiwillig)</span></label>
+            <input id="p12" name="02 Was bringt dich zum Lachen" type="text">
+          </div>
+          <div class="field-row">
+          <div class="field">
+            <label for="p13">Mein Lieblingsessen und/oder -getränk <span class="opt">(freiwillig)</span></label>
+            <input id="p13" name="02 Lieblingsessen/-getränk" type="text">
+          </div>
+          <div class="field">
+            <label for="p14">Mein Lieblingstier <span class="opt">(freiwillig)</span></label>
+            <input id="p14" name="02 Lieblingstier" type="text">
+          </div>
+          </div>
+          <div class="field">
+            <label for="p15">Lieblingslied, -film, -buch? <span class="opt">(freiwillig)</span></label>
+            <input id="p15" name="02 Lieblingslied/-film/-buch" type="text">
+          </div>
+        </section>
+        <section class="wz-step" data-step-title="Erweiterung" hidden>
+          <div class="step-head"><span class="step-num">03</span><h4>Erweiterung</h4></div>
+          <fieldset class="choice-group cols-2" data-min="1">
+            <legend>Mit welcher Altersgruppe kannst du dir eine 1:1 Patenschaft gut vorstellen? * <span class="opt">(mehrere möglich)</span></legend>
+            <label class="choice"><input type="checkbox" name="03 Altersgruppe" value="Kleinkinder (3–5 Jahre)"> <span>Kleinkinder (3–5 Jahre)</span></label>
+            <label class="choice"><input type="checkbox" name="03 Altersgruppe" value="Grundschulkinder (6–9 Jahre)"> <span>Grundschulkinder (6–9 Jahre)</span></label>
+            <label class="choice"><input type="checkbox" name="03 Altersgruppe" value="Ältere Kinder (10–13 Jahre)"> <span>Ältere Kinder (10–13 Jahre)</span></label>
+            <label class="choice"><input type="checkbox" name="03 Altersgruppe" value="Jugendliche (14–17 Jahre)"> <span>Jugendliche (14–17 Jahre)</span></label>
+            <label class="choice"><input type="checkbox" name="03 Altersgruppe" value="keine Präferenz"> <span>keine Präferenz</span></label>
+          </fieldset>
+          <fieldset class="choice-group cols-3">
+            <legend>Mit welchem Geschlecht des Kindes würdest du dich wohlfühlen? *</legend>
+            <label class="choice"><input type="radio" name="03 Geschlecht des Kindes" value="weiblich" required> <span>weiblich</span></label>
+            <label class="choice"><input type="radio" name="03 Geschlecht des Kindes" value="männlich"> <span>männlich</span></label>
+            <label class="choice"><input type="radio" name="03 Geschlecht des Kindes" value="keine Präferenz"> <span>keine Präferenz</span></label>
+          </fieldset>
+          <fieldset class="choice-group cols-3">
+            <legend>Hast du Erfahrungen im Umgang mit Kindern/Jugendlichen? *</legend>
+            <label class="choice"><input type="radio" name="03 Erfahrung mit Kindern" value="ja, regelmäßig" required> <span>ja, regelmäßig</span></label>
+            <label class="choice"><input type="radio" name="03 Erfahrung mit Kindern" value="gelegentlich"> <span>gelegentlich</span></label>
+            <label class="choice"><input type="radio" name="03 Erfahrung mit Kindern" value="bisher wenig"> <span>bisher wenig</span></label>
+          </fieldset>
+          <div class="field">
+            <label for="p16">Welche Erfahrungen oder Stärken bringst du mit? <span class="opt">(freiwillig)</span></label>
+            <textarea id="p16" name="03 Erfahrungen und Stärken" rows="3"></textarea>
+          </div>
+          <div class="field">
+            <label for="p17">Gibt es Interessen, Persönlichkeitsmerkmale oder Bedürfnisse eines Kindes, bei denen du dir besonders gut vorstellen kannst, eine Verbindung aufzubauen? <span class="opt">(freiwillig)</span></label>
+            <textarea id="p17" name="03 Verbindung" rows="3"></textarea>
+          </div>
+          <fieldset class="choice-group cols-2" data-min="1">
+            <legend>Was machst du selbst gern mit Kindern? * <span class="opt">(mehrere möglich)</span></legend>
+            <label class="choice"><input type="checkbox" name="03 Aktivitäten mit Kindern" value="Brett- / Kartenspiele"> <span>Brett- / Kartenspiele</span></label>
+            <label class="choice"><input type="checkbox" name="03 Aktivitäten mit Kindern" value="Malen / Basteln"> <span>Malen / Basteln</span></label>
+            <label class="choice"><input type="checkbox" name="03 Aktivitäten mit Kindern" value="Musik / Singen / Instrument"> <span>Musik / Singen / Instrument</span></label>
+            <label class="choice"><input type="checkbox" name="03 Aktivitäten mit Kindern" value="Vorlesen / Bücher"> <span>Vorlesen / Bücher</span></label>
+            <label class="choice"><input type="checkbox" name="03 Aktivitäten mit Kindern" value="Rätsel / Knobeln"> <span>Rätsel / Knobeln</span></label>
+            <label class="choice"><input type="checkbox" name="03 Aktivitäten mit Kindern" value="ruhig reden / zuhören"> <span>ruhig reden / zuhören</span></label>
+            <label class="choice"><input type="checkbox" name="03 Aktivitäten mit Kindern" value="Geschichten / Fantasie"> <span>Geschichten / Fantasie</span></label>
+            <label class="choice"><input type="checkbox" name="03 Aktivitäten mit Kindern" value="über Sport reden"> <span>über Sport reden</span></label>
+            <label class="choice"><input type="checkbox" name="03 Aktivitäten mit Kindern" value="Videospiele / Technik"> <span>Videospiele / Technik</span></label>
+            <label class="choice"><input type="checkbox" name="03 Aktivitäten mit Kindern" value="Quatsch / Humor"> <span>Quatsch / Humor</span></label>
+            <label class="choice"><input type="checkbox" name="03 Aktivitäten mit Kindern" value="Lernen / Entdecken"> <span>Lernen / Entdecken</span></label>
+            <label class="choice"><input type="checkbox" name="03 Aktivitäten mit Kindern" value="Bewegung"> <span>Bewegung</span></label>
+            <input class="choice-other" id="o18" name="03 Weitere Themen" type="text" placeholder="weitere Themen …" aria-label="weitere Themen …">
+          </fieldset>
+          <div class="field">
+            <label for="p19">Was würdest du besonders gerne anbieten – und was eher nicht? <span class="opt">(freiwillig)</span></label>
+            <textarea id="p19" name="03 Anbieten und eher nicht" rows="3"></textarea>
+          </div>
+          <fieldset class="choice-group cols-2" data-min="1">
+            <legend>Was liegt dir im Umgang mit Kindern besonders? * <span class="opt">(mehrere möglich)</span></legend>
+            <label class="choice"><input type="checkbox" name="03 Was mir liegt" value="Humor und Leichtigkeit"> <span>Humor und Leichtigkeit</span></label>
+            <label class="choice"><input type="checkbox" name="03 Was mir liegt" value="ruhig da sein"> <span>ruhig da sein</span></label>
+            <label class="choice"><input type="checkbox" name="03 Was mir liegt" value="geduldig zuhören"> <span>geduldig zuhören</span></label>
+            <label class="choice"><input type="checkbox" name="03 Was mir liegt" value="zum Spielen motivieren"> <span>zum Spielen motivieren</span></label>
+            <label class="choice"><input type="checkbox" name="03 Was mir liegt" value="kreativ werden"> <span>kreativ werden</span></label>
+            <label class="choice"><input type="checkbox" name="03 Was mir liegt" value="sanft Vertrauen aufbauen"> <span>sanft Vertrauen aufbauen</span></label>
+            <label class="choice"><input type="checkbox" name="03 Was mir liegt" value="spontan reagieren"> <span>spontan reagieren</span></label>
+            <label class="choice"><input type="checkbox" name="03 Was mir liegt" value="klar und strukturiert sein"> <span>klar und strukturiert sein</span></label>
+            <input class="choice-other" id="o20" name="03 Was mir liegt – Sonstiges" type="text" placeholder="etwas anderes …" aria-label="etwas anderes …">
+          </fieldset>
+        </section>
+        <section class="wz-step" data-step-title="So stelle ich mir meine Patenschaft vor" hidden>
+          <div class="step-head"><span class="step-num">04</span><h4>So stelle ich mir meine Patenschaft vor</h4></div>
+          <div class="field">
+            <label for="p21">Warum möchtest du MEDI-Pate / MEDI-Patin werden? <span class="opt">(freiwillig)</span></label>
+            <textarea id="p21" name="04 Warum MEDI-Pat:in" rows="3"></textarea>
+          </div>
+          <div class="field">
+            <label for="p22">Was macht eine gute Patenschaft für dich aus? Was ist dir an einer guten Patenschaft wichtig? <span class="opt">(freiwillig)</span></label>
+            <textarea id="p22" name="04 Gute Patenschaft" rows="3"></textarea>
+          </div>
+          <div class="field">
+            <label for="p23">Gibt es etwas, das du dir für die gemeinsame Zeit wünschst? <span class="opt">(freiwillig)</span></label>
+            <textarea id="p23" name="04 Wünsche für die gemeinsame Zeit" rows="3"></textarea>
+          </div>
+          <div class="field">
+            <label for="p24">Gibt es Wünsche für dein Patenkind oder etwas, das wir für ein gutes Matching wissen sollten? <span class="opt">(freiwillig)</span></label>
+            <textarea id="p24" name="04 Wünsche für das Matching" rows="3"></textarea>
+          </div>
+        </section>
+        <section class="wz-step" data-step-title="Verantwortung und Zusammenarbeit" hidden>
+          <div class="step-head"><span class="step-num">05</span><h4>Verantwortung und Zusammenarbeit</h4></div>
+          <fieldset class="confirm-group">
+            <legend>Bitte bestätige jeden Punkt *</legend>
+            <label class="consent"><input type="checkbox" name="05 Verantwortung 1" value="bestätigt" required> <span>Ich übernehme keine medizinischen oder pflegerischen Aufgaben und gebe keine medizinischen Ratschläge.</span></label>
+            <label class="consent"><input type="checkbox" name="05 Verantwortung 2" value="bestätigt" required> <span>Ich halte Stationsregeln, Hygienevorgaben und vereinbarte Besuchsgrenzen ein.</span></label>
+            <label class="consent"><input type="checkbox" name="05 Verantwortung 3" value="bestätigt" required> <span>Ich respektiere ein „Nein“, eine Pause und persönliche Grenzen des Kindes jederzeit.</span></label>
+            <label class="consent"><input type="checkbox" name="05 Verantwortung 4" value="bestätigt" required> <span>Ich melde Überforderung, Schwierigkeiten oder Ausfälle zeitnah an die Koordination.</span></label>
+            <label class="consent"><input type="checkbox" name="05 Verantwortung 5" value="bestätigt" required> <span>Ich teile keine Bilder, Patientendaten oder privaten Kontaktwege ohne ausdrücklich geklärte Freigabe.</span></label>
+          </fieldset>
+          <div class="field">
+            <label for="p25">Offene Fragen oder Vorbehalte zu diesen Punkten <span class="opt">(freiwillig)</span></label>
+            <textarea id="p25" name="05 Offene Fragen oder Vorbehalte" rows="3"></textarea>
+          </div>
+        </section>
+        <section class="wz-step" data-step-title="Interne Daten" hidden>
+          <div class="step-head"><span class="step-num">06</span><h4>Interne Daten</h4></div>
+          <div class="field">
+            <label for="p26">Handynummer oder E-Mail, über die wir dich kontaktieren dürfen *</label>
+            <input id="p26" name="06 Kontakt (Handy oder E-Mail)" type="text" required placeholder="z. B. 0170 1234567" data-label="Handynummer oder E-Mail">
+          </div>
+          <fieldset class="choice-group cols-4">
+            <legend>Erreichbarkeit über die angegebene Nummer <span class="opt">(freiwillig, mehrere möglich)</span></legend>
+            <label class="choice"><input type="checkbox" name="06 Erreichbarkeit" value="WhatsApp"> <span>WhatsApp</span></label>
+            <label class="choice"><input type="checkbox" name="06 Erreichbarkeit" value="Signal"> <span>Signal</span></label>
+            <label class="choice"><input type="checkbox" name="06 Erreichbarkeit" value="SMS"> <span>SMS</span></label>
+            <label class="choice"><input type="checkbox" name="06 Erreichbarkeit" value="iPhone-Messenger"> <span>iPhone-Messenger</span></label>
+          </fieldset>
+          <fieldset class="confirm-group">
+            <legend>Ich bestätige, dass *</legend>
+            <label class="consent"><input type="checkbox" name="06 Bestätigung 1" value="bestätigt" required> <span>die Angaben in 01–04 an das Patenkind und die Sorgeberechtigten weitergegeben werden dürfen. 05 und 06 darf die Koordination intern nutzen.</span></label>
+            <label class="consent"><input type="checkbox" name="06 Bestätigung 2" value="bestätigt" required> <span>die Angaben in 01–05 wahrheitsgemäß und gewissenhaft ausgefüllt wurden.</span></label>
+          </fieldset>
+          <p class="field-hint">Bitte beachte, dass nur wahrheitsgemäße Antworten über deine Person zu einem guten Matching beitragen können.</p>
+          <div class="field">
+            <label for="p27">Anmerkungen / Verbesserungsvorschläge zum Fragebogen <span class="opt">(freiwillig)</span></label>
+            <p class="field-hint">Da wir noch eine sehr junge Initiative sind, sind wir für jeden Verbesserungsvorschlag und jede Kritik offen.</p>
+            <textarea id="p27" name="06 Anmerkungen zum Fragebogen" rows="3"></textarea>
+          </div>
+          <label class="consent">
+            <input type="checkbox" name="datenschutz" required>
+            <span>Ich bin einverstanden, dass meine Angaben zur Kontaktaufnahme im Rahmen von MEDIPATEN gespeichert und verarbeitet werden (siehe <a href="datenschutz.html">Datenschutz</a>). *</span>
+          </label>
+        </section>
         <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-      <label class="consent">
-        <input type="checkbox" name="datenschutz" required>
-        <span>Ich bin einverstanden, dass meine Angaben zur Kontaktaufnahme im Rahmen von MEDIPATEN gespeichert und verarbeitet werden. *</span>
-      </label>
-        <button type="submit" class="btn btn-primary btn-lg btn-block">Anmeldung absenden</button>
+        <div class="step-nav">
+          <button type="button" class="btn btn-back step-back">Zurück</button>
+          <button type="button" class="btn btn-primary step-next">Weiter</button>
+          <button type="submit" class="btn btn-primary step-submit">Steckbrief absenden</button>
+        </div>
         <p class="form-status" role="status" aria-live="polite"></p>
       </form>
 
-      <!-- Reiter 2: Patenschaft für mein Kind (Eltern / Sorgeberechtigte) -->
-      <form class="contact-form" id="eltern-form" role="tabpanel" aria-labelledby="tab-eltern" novalidate hidden data-formal
-            data-topic="Patenschaft für mein Kind" data-subject="Neue Eltern-Anfrage: Patenschaft für mein Kind"
-            data-button="Unverbindlich anfragen"
+      <!-- Reiter 2: Patenschaft für mein Kind – Kontakt + Steckbrief in Schritten -->
+      <form class="contact-form wizard" id="eltern-form" role="tabpanel" aria-labelledby="tab-eltern" novalidate hidden data-formal
+            data-topic="Patenschaft für mein Kind – Steckbrief" data-subject="Neuer Eltern-Steckbrief"
+            data-topic-info="Patenschaft für mein Kind – nur Informationen" data-subject-info="Neue Eltern-Anfrage (Informationen)"
+            data-button="Steckbrief absenden" data-button-info="Unverbindlich anfragen" data-first-next="Weiter zum Steckbrief"
             data-success-title="Vielen Dank für Ihre Anfrage!"
-            data-success="Ihre unverbindliche Anfrage ist bei uns angekommen. So geht es weiter: Eine Ansprechperson von MEDIPATEN meldet sich persönlich bei Ihnen, beantwortet Ihre Fragen und bespricht mit Ihnen in Ruhe, ob und wie eine Patenschaft für Ihr Kind passen kann.">
-        <p class="form-note">Ihre Anfrage ist unverbindlich. Bitte geben Sie <strong>keine Diagnose oder medizinischen Details</strong> an – das besprechen wir, wenn Sie möchten, persönlich.</p>
-        <div class="field">
-          <label for="e-name">Name der sorgeberechtigten Person *</label>
-          <input id="e-name" name="name" type="text" autocomplete="name" required>
+            data-success="Ihre Angaben sind bei uns angekommen. So geht es weiter: Eine Ansprechperson von MEDIPATEN meldet sich persönlich bei Ihnen, beantwortet Ihre Fragen und bespricht mit Ihnen in Ruhe, ob und wie eine Patenschaft für Ihr Kind passen kann.">
+        <div class="wizard-progress" aria-live="polite">
+          <div class="wizard-bar"><span></span></div>
+          <p class="wizard-label"></p>
         </div>
-        <div class="field-row">
+        <section class="wz-step" data-step-title="Kontakt">
+          <div class="step-head"><h4>Kontakt</h4></div>
+          <p class="form-note">Ihre Anfrage ist unverbindlich. Bitte geben Sie <strong>keine Diagnose oder medizinischen Details</strong> an – das besprechen wir, wenn Sie möchten, persönlich.</p>
           <div class="field">
-            <label for="e-email">E-Mail-Adresse *</label>
-            <input id="e-email" name="email" type="email" autocomplete="email" required>
+            <label for="k28">Name der sorgeberechtigten Person *</label>
+            <input id="k28" name="name" type="text" required autocomplete="name">
+          </div>
+          <div class="field-row">
+          <div class="field">
+            <label for="k29">E-Mail-Adresse *</label>
+            <input id="k29" name="email" type="email" required autocomplete="email">
           </div>
           <div class="field">
-            <label for="e-tel">Telefonnummer <span class="opt">(optional)</span></label>
-            <input id="e-tel" name="telefon" type="tel" autocomplete="tel">
+            <label for="k30">Telefonnummer <span class="opt">(freiwillig)</span></label>
+            <input id="k30" name="telefon" type="tel" autocomplete="tel">
           </div>
-        </div>
-        <div class="field-row">
-          <div class="field">
-            <label for="e-alter">Alter des Kindes</label>
-            <input id="e-alter" name="alter_kind" type="text" inputmode="numeric" placeholder="z. B. 8 Jahre">
           </div>
           <div class="field">
-            <label for="e-sprachen">Gesprochene Sprache(n)</label>
-            <input id="e-sprachen" name="sprachen" type="text" placeholder="z. B. Deutsch, Arabisch">
+            <label for="k31">Behandelnde Klinik / Standort *</label>
+            <input id="k31" name="klinik" type="text" required placeholder="z. B. Gemeinschaftskrankenhaus Herdecke">
           </div>
-        </div>
-        <div class="field">
-          <label for="e-klinik">Behandelnde Klinik / Standort <span class="opt">(wenn bekannt)</span></label>
-          <input id="e-klinik" name="klinik" type="text" placeholder="z. B. Gemeinschaftskrankenhaus Herdecke">
-        </div>
-        <fieldset class="choice-group">
-          <legend>Ihr Interesse *</legend>
-          <label class="choice"><input type="radio" name="interesse" value="Ich möchte Informationen" required> <span>Ich möchte Informationen</span></label>
-          <label class="choice"><input type="radio" name="interesse" value="Ich interessiere mich konkret für eine Patenschaft"> <span>Ich interessiere mich konkret für eine Patenschaft</span></label>
-        </fieldset>
-        <div class="field">
-          <label for="e-msg">Nachricht <span class="opt">(optional)</span></label>
-          <textarea id="e-msg" name="nachricht" rows="4" placeholder="Was möchten Sie uns mitteilen oder fragen? Bitte keine medizinischen Details."></textarea>
-        </div>
+          <fieldset class="choice-group interest-choice">
+            <legend>Wie können wir Ihnen helfen? *</legend>
+            <label class="choice"><input type="radio" name="interesse" value="Ich möchte erst Informationen" required> <span><strong>Ich möchte erst Informationen</strong><br><small>Wir melden uns bei Ihnen und beantworten Ihre Fragen.</small></span></label>
+            <label class="choice"><input type="radio" name="interesse" value="Ich möchte mein Kind für eine Patenschaft anmelden"> <span><strong>Ich möchte mein Kind für eine Patenschaft anmelden</strong><br><small>Dafür füllen Sie im nächsten Schritt den Steckbrief aus.</small></span></label>
+          </fieldset>
+          <div class="info-only" hidden>
+            <label class="consent">
+              <input type="checkbox" name="datenschutz" required>
+              <span>Ich bin einverstanden, dass meine Angaben zur Kontaktaufnahme im Rahmen von MEDIPATEN gespeichert und verarbeitet werden (siehe <a href="datenschutz.html">Datenschutz</a>). *</span>
+            </label>
+          </div>
+        </section>
+        <section class="wz-step" data-step-title="Informationen über mein Kind" hidden>
+          <div class="step-head"><span class="step-num">01</span><h4>Informationen über mein Kind</h4></div>
+          <p class="step-intro">Schön, dass Sie dabei sind! 💛 Wir möchten Ihrem Kind während des Krankenhausaufenthalts eine Person zur Seite stellen, die Zeit mit ihm verbringt, zuhört, spielt, lacht und für etwas Abwechslung im Klinikalltag sorgt. Damit wir eine passende Patin oder einen passenden Paten finden, möchten wir Ihr Kind ein bisschen kennenlernen.<br><br>Der Steckbrief hat zwei Teile: Einen Teil füllen Sie als Eltern aus, den anderen Teil (06 und 07) Ihr Kind selbst – gerne mit Ihrer Unterstützung. Es gibt keine richtigen oder falschen Antworten.</p>
+          <div class="field-row">
+          <div class="field">
+            <label for="k32">Vorname *</label>
+            <input id="k32" name="01 Vorname des Kindes" type="text" required>
+          </div>
+          <div class="field">
+            <label for="k33">Alter *</label>
+            <input id="k33" name="01 Alter des Kindes" type="number" required placeholder="z. B. 8" min="0" max="21" inputmode="numeric">
+          </div>
+          </div>
+          <div class="field">
+            <label for="k34">Rufname Ihres Kindes <span class="opt">(freiwillig)</span></label>
+            <input id="k34" name="01 Rufname" type="text">
+          </div>
+          <div class="field-row">
+          <div class="field">
+            <label for="k35">Geschlecht *</label>
+            <select id="k35" name="01 Geschlecht" required><option value="" disabled selected>Bitte wählen</option><option>weiblich</option><option>männlich</option><option>divers</option><option>keine Angabe</option></select>
+          </div>
+          <div class="field">
+            <label for="k36">Pronomen <span class="opt">(freiwillig)</span></label>
+            <input id="k36" name="01 Pronomen" type="text">
+          </div>
+          </div>
+          <div class="field">
+            <label for="k37">Welche Sprache(n) versteht und spricht Ihr Kind am liebsten? *</label>
+            <input id="k37" name="01 Sprachen" type="text" required placeholder="z. B. Deutsch, Arabisch" data-label="Sprachen des Kindes">
+          </div>
+          <fieldset class="choice-group cols-2">
+            <legend>Gibt es einen Wunsch bezüglich der Patenschaftsperson? *</legend>
+            <label class="choice"><input type="radio" name="01 Wunsch Patenschaftsperson" value="lieber eine Patin" required> <span>lieber eine Patin</span></label>
+            <label class="choice"><input type="radio" name="01 Wunsch Patenschaftsperson" value="lieber einen Paten"> <span>lieber einen Paten</span></label>
+            <label class="choice"><input type="radio" name="01 Wunsch Patenschaftsperson" value="keine Präferenz"> <span>keine Präferenz</span></label>
+            <label class="choice"><input type="radio" name="01 Wunsch Patenschaftsperson" value="möchten wir besprechen"> <span>möchten wir besprechen</span></label>
+          </fieldset>
+        </section>
+        <section class="wz-step" data-step-title="Das ist mein/unser Kind" hidden>
+          <div class="step-head"><span class="step-num">02</span><h4>Das ist mein/unser Kind</h4></div>
+          <fieldset class="field-set">
+            <legend>Wie würden Sie Ihr Kind in drei Worten beschreiben? <span class="opt">(freiwillig)</span></legend>
+            <div class="three-words">
+              <input name="02 Drei Worte 1" type="text" aria-label="Wort 1" placeholder="1.">
+              <input name="02 Drei Worte 2" type="text" aria-label="Wort 2" placeholder="2.">
+              <input name="02 Drei Worte 3" type="text" aria-label="Wort 3" placeholder="3.">
+            </div>
+          </fieldset>
+          <div class="field">
+            <label for="k38">Was macht Ihr Kind besonders? <span class="opt">(freiwillig)</span></label>
+            <input id="k38" name="02 Was macht das Kind besonders" type="text">
+          </div>
+          <div class="field">
+            <label for="k39">Was bringt Ihr Kind zum Lachen? <span class="opt">(freiwillig)</span></label>
+            <input id="k39" name="02 Was bringt das Kind zum Lachen" type="text">
+          </div>
+          <div class="field">
+            <label for="k40">Was ist Ihrem Kind wichtig, wenn es eine neue Person kennenlernt? <span class="opt">(freiwillig)</span></label>
+            <textarea id="k40" name="02 Wichtig beim Kennenlernen" rows="3"></textarea>
+          </div>
+        </section>
+        <section class="wz-step" data-step-title="Das macht mein/unser Kind gern" hidden>
+          <div class="step-head"><span class="step-num">03</span><h4>Das macht mein/unser Kind gern</h4></div>
+          <fieldset class="choice-group cols-2" data-min="1">
+            <legend>Welche Aktivitäten macht Ihr Kind gern? * <span class="opt">(mehrere möglich)</span></legend>
+            <label class="choice"><input type="checkbox" name="03 Aktivitäten" value="Brett- / Kartenspiele"> <span>Brett- / Kartenspiele</span></label>
+            <label class="choice"><input type="checkbox" name="03 Aktivitäten" value="Malen / Basteln"> <span>Malen / Basteln</span></label>
+            <label class="choice"><input type="checkbox" name="03 Aktivitäten" value="Vorlesen / Bücher"> <span>Vorlesen / Bücher</span></label>
+            <label class="choice"><input type="checkbox" name="03 Aktivitäten" value="Rätseln / Knobeln"> <span>Rätseln / Knobeln</span></label>
+            <label class="choice"><input type="checkbox" name="03 Aktivitäten" value="Musik / Singen / Tanz"> <span>Musik / Singen / Tanz</span></label>
+            <label class="choice"><input type="checkbox" name="03 Aktivitäten" value="Geschichten / Fantasie"> <span>Geschichten / Fantasie</span></label>
+            <label class="choice"><input type="checkbox" name="03 Aktivitäten" value="ruhig reden / zuhören"> <span>ruhig reden / zuhören</span></label>
+            <label class="choice"><input type="checkbox" name="03 Aktivitäten" value="lernen / entdecken"> <span>lernen / entdecken</span></label>
+            <label class="choice"><input type="checkbox" name="03 Aktivitäten" value="Bewegung"> <span>Bewegung</span></label>
+            <label class="choice"><input type="checkbox" name="03 Aktivitäten" value="über Sport reden"> <span>über Sport reden</span></label>
+            <label class="choice"><input type="checkbox" name="03 Aktivitäten" value="Videospiele / Technik"> <span>Videospiele / Technik</span></label>
+            <label class="choice"><input type="checkbox" name="03 Aktivitäten" value="Quatsch / Humor"> <span>Quatsch / Humor</span></label>
+            <label class="choice"><input type="checkbox" name="03 Aktivitäten" value="gemeinsam Neues entdecken"> <span>gemeinsam Neues entdecken</span></label>
+            <label class="choice"><input type="checkbox" name="03 Aktivitäten" value="Tiere / Natur"> <span>Tiere / Natur</span></label>
+            <input class="choice-other" id="o41" name="03 Weitere Aktivitäten" type="text" placeholder="etwas anderes …" aria-label="etwas anderes …">
+          </fieldset>
+          <div class="field">
+            <label for="k42">Was begeistert Ihr Kind besonders? <span class="opt">(freiwillig)</span></label>
+            <textarea id="k42" name="03 Was begeistert das Kind" rows="3" placeholder="z. B. Lieblingsspiel, Hobby, Figuren, Thema"></textarea>
+          </div>
+        </section>
+        <section class="wz-step" data-step-title="Persönlichkeit und Umgang" hidden>
+          <div class="step-head"><span class="step-num">04</span><h4>Persönlichkeit und Umgang</h4></div>
+          <fieldset class="choice-group scale">
+            <legend>Wie viel Energie hat Ihr Kind bei Besuchen meistens? *</legend>
+            <div class="scale-row">
+              <span class="scale-end">lieber ruhig</span>
+              <label class="scale-opt"><input type="radio" name="04 Energie bei Besuchen" value="1" required><span>1</span></label>
+              <label class="scale-opt"><input type="radio" name="04 Energie bei Besuchen" value="2"><span>2</span></label>
+              <label class="scale-opt"><input type="radio" name="04 Energie bei Besuchen" value="3"><span>3</span></label>
+              <label class="scale-opt"><input type="radio" name="04 Energie bei Besuchen" value="4"><span>4</span></label>
+              <label class="scale-opt"><input type="radio" name="04 Energie bei Besuchen" value="5"><span>5</span></label>
+              <span class="scale-end">lieber lebhaft</span>
+            </div>
+            <label class="choice scale-na"><input type="radio" name="04 Energie bei Besuchen" value="nicht aussagbar"> <span>nicht aussagbar</span></label>
+          </fieldset>
+          <fieldset class="choice-group scale">
+            <legend>Wie begegnet Ihr Kind neuen Menschen meistens? *</legend>
+            <div class="scale-row">
+              <span class="scale-end">eher vorsichtig</span>
+              <label class="scale-opt"><input type="radio" name="04 Neue Menschen" value="1" required><span>1</span></label>
+              <label class="scale-opt"><input type="radio" name="04 Neue Menschen" value="2"><span>2</span></label>
+              <label class="scale-opt"><input type="radio" name="04 Neue Menschen" value="3"><span>3</span></label>
+              <label class="scale-opt"><input type="radio" name="04 Neue Menschen" value="4"><span>4</span></label>
+              <label class="scale-opt"><input type="radio" name="04 Neue Menschen" value="5"><span>5</span></label>
+              <span class="scale-end">öffnet sich schnell</span>
+            </div>
+            <label class="choice scale-na"><input type="radio" name="04 Neue Menschen" value="nicht aussagbar"> <span>nicht aussagbar</span></label>
+          </fieldset>
+          <fieldset class="choice-group scale">
+            <legend>Wie mag es Ihr Kind bei gemeinsamen Aktivitäten? *</legend>
+            <div class="scale-row">
+              <span class="scale-end">spontan</span>
+              <label class="scale-opt"><input type="radio" name="04 Gemeinsame Aktivitäten" value="1" required><span>1</span></label>
+              <label class="scale-opt"><input type="radio" name="04 Gemeinsame Aktivitäten" value="2"><span>2</span></label>
+              <label class="scale-opt"><input type="radio" name="04 Gemeinsame Aktivitäten" value="3"><span>3</span></label>
+              <label class="scale-opt"><input type="radio" name="04 Gemeinsame Aktivitäten" value="4"><span>4</span></label>
+              <label class="scale-opt"><input type="radio" name="04 Gemeinsame Aktivitäten" value="5"><span>5</span></label>
+              <span class="scale-end">mit klarer Struktur</span>
+            </div>
+            <label class="choice scale-na"><input type="radio" name="04 Gemeinsame Aktivitäten" value="nicht aussagbar"> <span>nicht aussagbar</span></label>
+          </fieldset>
+          <fieldset class="choice-group scale">
+            <legend>Wie viel möchte Ihr Kind normalerweise reden? *</legend>
+            <div class="scale-row">
+              <span class="scale-end">wenig / Stille ist okay</span>
+              <label class="scale-opt"><input type="radio" name="04 Reden" value="1" required><span>1</span></label>
+              <label class="scale-opt"><input type="radio" name="04 Reden" value="2"><span>2</span></label>
+              <label class="scale-opt"><input type="radio" name="04 Reden" value="3"><span>3</span></label>
+              <label class="scale-opt"><input type="radio" name="04 Reden" value="4"><span>4</span></label>
+              <label class="scale-opt"><input type="radio" name="04 Reden" value="5"><span>5</span></label>
+              <span class="scale-end">gerne sehr viel</span>
+            </div>
+            <label class="choice scale-na"><input type="radio" name="04 Reden" value="nicht aussagbar"> <span>nicht aussagbar</span></label>
+          </fieldset>
+          <div class="field">
+            <label for="k43">Wie gelingt ein erstes Kennenlernen am besten? <span class="opt">(freiwillig)</span></label>
+            <textarea id="k43" name="04 Erstes Kennenlernen" rows="3"></textarea>
+          </div>
+        </section>
+        <section class="wz-step" data-step-title="Wünsche, Grenzen und Wohlbefinden" hidden>
+          <div class="step-head"><span class="step-num">05</span><h4>Wünsche, Grenzen und Wohlbefinden</h4></div>
+          <fieldset class="choice-group cols-2" data-min="1">
+            <legend>Was tut Ihrem Kind an anstrengenden Tagen eher gut? * <span class="opt">(mehrere möglich)</span></legend>
+            <label class="choice"><input type="checkbox" name="05 Anstrengende Tage" value="Stille / einfach da sein"> <span>Stille / einfach da sein</span></label>
+            <label class="choice"><input type="checkbox" name="05 Anstrengende Tage" value="Ablenkung"> <span>Ablenkung</span></label>
+            <label class="choice"><input type="checkbox" name="05 Anstrengende Tage" value="zuhören"> <span>zuhören</span></label>
+            <label class="choice"><input type="checkbox" name="05 Anstrengende Tage" value="kurzer Besuch"> <span>kurzer Besuch</span></label>
+            <label class="choice"><input type="checkbox" name="05 Anstrengende Tage" value="eine vertraute Bezugsperson dabei"> <span>eine vertraute Bezugsperson dabei</span></label>
+            <label class="choice"><input type="checkbox" name="05 Anstrengende Tage" value="Kind möchte selbst entscheiden"> <span>Kind möchte selbst entscheiden</span></label>
+          </fieldset>
+          <div class="field">
+            <label for="k44">Was mag Ihr Kind überhaupt nicht? <span class="opt">(freiwillig)</span></label>
+            <textarea id="k44" name="05 Was das Kind nicht mag" rows="3" placeholder="z. B. laute Spiele, viele Fragen"></textarea>
+          </div>
+          <div class="field">
+            <label for="k45">Was hilft, wenn Ihr Kind traurig, müde oder überfordert ist? <span class="opt">(freiwillig)</span></label>
+            <textarea id="k45" name="05 Was hilft" rows="3" placeholder="bitte ohne medizinische Details"></textarea>
+          </div>
+          <div class="field">
+            <label for="k46">Was soll die Patin / der Pate vor allem mitbringen? <span class="opt">(freiwillig)</span></label>
+            <textarea id="k46" name="05 Was der Pate mitbringen soll" rows="3"></textarea>
+          </div>
+          <div class="field">
+            <label for="k47">Was erhoffen Sie sich von der Patenschaft? Was wäre ein gelungenes Treffen? <span class="opt">(freiwillig)</span></label>
+            <textarea id="k47" name="05 Erwartungen" rows="3"></textarea>
+          </div>
+          <fieldset class="choice-group cols-2">
+            <legend>Welche Besuchsdauer passt meist zu Ihrem Kind? *</legend><p class="field-hint">Die genaue Dauer wird später individuell zwischen Ihnen und der MEDI-Patin / dem MEDI-Paten abgeklärt. Die Angabe dient der Orientierung.</p>
+            <label class="choice"><input type="radio" name="05 Besuchsdauer" value="ca. 30 Minuten" required> <span>ca. 30 Minuten</span></label>
+            <label class="choice"><input type="radio" name="05 Besuchsdauer" value="45–60 Minuten"> <span>45–60 Minuten</span></label>
+            <label class="choice"><input type="radio" name="05 Besuchsdauer" value="60–90 Minuten"> <span>60–90 Minuten</span></label>
+            <label class="choice"><input type="radio" name="05 Besuchsdauer" value="stark tagesabhängig"> <span>stark tagesabhängig</span></label>
+            <label class="choice"><input type="radio" name="05 Besuchsdauer" value="zu Beginn eher kürzer, mit der Zeit auch längere Besuche"> <span>zu Beginn eher kürzer, mit der Zeit auch längere Besuche</span></label>
+          </fieldset>
+        </section>
+        <section class="wz-step kid-step" data-step-title="Deine Seite – das bin ich" hidden>
+          <div class="step-head"><span class="step-num">06</span><h4>Deine Seite – das bin ich</h4></div>
+          <p class="kid-intro">Ab hier bist du dran! 🎨 Diese beiden Teile darfst du selbst ausfüllen – gern zusammen mit deinen Eltern.</p>
+          <div class="field-row">
+          <div class="field">
+            <label for="k48">Meine Hobbys <span class="opt">(freiwillig)</span></label>
+            <input id="k48" name="06 Hobbys" type="text">
+          </div>
+          <div class="field">
+            <label for="k49">Mein Lieblingsspiel / meine Lieblingsbeschäftigung <span class="opt">(freiwillig)</span></label>
+            <input id="k49" name="06 Lieblingsspiel" type="text">
+          </div>
+          </div>
+          <div class="field-row">
+          <div class="field">
+            <label for="k50">Mein Lieblingslied <span class="opt">(freiwillig)</span></label>
+            <input id="k50" name="06 Lieblingslied" type="text">
+          </div>
+          <div class="field">
+            <label for="k51">Mein Lieblingsessen <span class="opt">(freiwillig)</span></label>
+            <input id="k51" name="06 Lieblingsessen" type="text">
+          </div>
+          </div>
+          <div class="field-row">
+          <div class="field">
+            <label for="k52">Mein Lieblingstier <span class="opt">(freiwillig)</span></label>
+            <input id="k52" name="06 Lieblingstier" type="text">
+          </div>
+          <div class="field">
+            <label for="k53">Meine Lieblingsfarbe <span class="opt">(freiwillig)</span></label>
+            <input id="k53" name="06 Lieblingsfarbe" type="text">
+          </div>
+          </div>
+        </section>
+        <section class="wz-step kid-step" data-step-title="Deine Seite – du darfst entscheiden" hidden>
+          <div class="step-head"><span class="step-num">07</span><h4>Deine Seite – du darfst entscheiden</h4></div>
+          <fieldset class="choice-group cols-2">
+            <legend>Hättest du Lust, jemanden zum Spielen oder Quatschen kennenzulernen? *</legend>
+            <label class="choice"><input type="radio" name="07 Lust auf Kennenlernen" value="ja, gerne" required> <span>ja, gerne</span></label>
+            <label class="choice"><input type="radio" name="07 Lust auf Kennenlernen" value="vielleicht"> <span>vielleicht</span></label>
+            <label class="choice"><input type="radio" name="07 Lust auf Kennenlernen" value="erstmal kurz anschauen"> <span>erstmal kurz anschauen</span></label>
+            <label class="choice"><input type="radio" name="07 Lust auf Kennenlernen" value="nein, gerade nicht"> <span>nein, gerade nicht</span></label>
+          </fieldset>
+          <fieldset class="choice-group cols-2" data-min="1">
+            <legend>So soll meine MEDI-Patin oder mein MEDI-Pate sein: * <span class="opt">(mehrere möglich)</span></legend>
+            <label class="choice"><input type="checkbox" name="07 So soll mein MEDI-Pate sein" value="lustig"> <span>lustig</span></label>
+            <label class="choice"><input type="checkbox" name="07 So soll mein MEDI-Pate sein" value="kreativ"> <span>kreativ</span></label>
+            <label class="choice"><input type="checkbox" name="07 So soll mein MEDI-Pate sein" value="geduldig"> <span>geduldig</span></label>
+            <label class="choice"><input type="checkbox" name="07 So soll mein MEDI-Pate sein" value="ruhig"> <span>ruhig</span></label>
+            <label class="choice"><input type="checkbox" name="07 So soll mein MEDI-Pate sein" value="redet gern"> <span>redet gern</span></label>
+            <label class="choice"><input type="checkbox" name="07 So soll mein MEDI-Pate sein" value="hört gut zu"> <span>hört gut zu</span></label>
+            <label class="choice"><input type="checkbox" name="07 So soll mein MEDI-Pate sein" value="sportlich / aktiv"> <span>sportlich / aktiv</span></label>
+            <label class="choice"><input type="checkbox" name="07 So soll mein MEDI-Pate sein" value="ich lasse mich überraschen"> <span>ich lasse mich überraschen</span></label>
+          </fieldset>
+          <fieldset class="choice-group cols-2" data-min="1">
+            <legend>Wenn ich keine Lust mehr habe, möchte ich … * <span class="opt">(mehrere möglich)</span></legend>
+            <label class="choice"><input type="checkbox" name="07 Wenn ich keine Lust mehr habe" value="eine Pause machen"> <span>eine Pause machen</span></label>
+            <label class="choice"><input type="checkbox" name="07 Wenn ich keine Lust mehr habe" value="dass wir etwas anderes machen"> <span>dass wir etwas anderes machen</span></label>
+            <label class="choice"><input type="checkbox" name="07 Wenn ich keine Lust mehr habe" value="allein sein"> <span>allein sein</span></label>
+            <label class="choice"><input type="checkbox" name="07 Wenn ich keine Lust mehr habe" value="dass jemand kurz bleibt"> <span>dass jemand kurz bleibt</span></label>
+          </fieldset>
+          <div class="field">
+            <label for="k54">Was magst du gar nicht? <span class="opt">(freiwillig)</span></label>
+            <textarea id="k54" name="07 Was ich gar nicht mag" rows="3"></textarea>
+          </div>
+          <div class="field">
+            <label for="k55">Wenn wir uns zum ersten Mal treffen: Was sollten wir zusammen machen? <span class="opt">(freiwillig)</span></label>
+            <textarea id="k55" name="07 Erstes Treffen" rows="3"></textarea>
+          </div>
+          <p class="kid-intro">🖍️ Du malst gern? Male dich und deine Patin / deinen Paten bei einer tollen Beschäftigung – und bring das Bild einfach zum ersten Kennenlernen mit!</p>
+        </section>
+        <section class="wz-step" data-step-title="Absprachen mit Eltern und Klinik" hidden>
+          <div class="step-head"><span class="step-num">08</span><h4>Absprachen mit Eltern und Klinik</h4></div>
+          <fieldset class="choice-group cols-1">
+            <legend>Wie soll das erste Kennenlernen idealerweise stattfinden? *</legend>
+            <label class="choice"><input type="radio" name="08 Erstes Kennenlernen" value="mit mir als Bezugsperson" required> <span>mit mir als Bezugsperson</span></label>
+            <label class="choice"><input type="radio" name="08 Erstes Kennenlernen" value="je nach Tagesform / Absprache"> <span>je nach Tagesform / Absprache</span></label>
+            <label class="choice"><input type="radio" name="08 Erstes Kennenlernen" value="das Kind allein"> <span>das Kind allein</span></label>
+          </fieldset>
+          <fieldset class="choice-group cols-2">
+            <legend>Worüber möchten Sie vor dem ersten Treffen unbedingt sprechen? <span class="opt">(freiwillig, mehrere möglich)</span></legend><p class="field-hint">Allgemeine Absprachen für die Besuche treffen Sie später mit der MEDI-Patin / dem MEDI-Paten. Hier geht es um Themen, die Sie vor dem Matching und dem ersten Treffen ausführlicher besprechen möchten.</p>
+            <label class="choice"><input type="checkbox" name="08 Vorab besprechen" value="Besuchsdauer"> <span>Besuchsdauer</span></label>
+            <label class="choice"><input type="checkbox" name="08 Vorab besprechen" value="Kommunikation / Sprache"> <span>Kommunikation / Sprache</span></label>
+            <label class="choice"><input type="checkbox" name="08 Vorab besprechen" value="Hygiene"> <span>Hygiene</span></label>
+            <label class="choice"><input type="checkbox" name="08 Vorab besprechen" value="Umgang mit belastenden Gefühlen"> <span>Umgang mit belastenden Gefühlen</span></label>
+            <label class="choice"><input type="checkbox" name="08 Vorab besprechen" value="Grenzen / Nähe / Distanz"> <span>Grenzen / Nähe / Distanz</span></label>
+            <label class="choice"><input type="checkbox" name="08 Vorab besprechen" value="Erreichbarkeit der Koordination"> <span>Erreichbarkeit der Koordination</span></label>
+          </fieldset>
+          <div class="field">
+            <label for="k56">Gibt es organisatorische Wünsche oder Grenzen, die wir berücksichtigen sollten? <span class="opt">(freiwillig)</span></label>
+            <textarea id="k56" name="08 Organisatorische Wünsche" rows="3"></textarea>
+          </div>
+        </section>
+        <section class="wz-step" data-step-title="Gemeinsame Vereinbarung für das Kennenlernen" hidden>
+          <div class="step-head"><span class="step-num">09</span><h4>Gemeinsame Vereinbarung für das Kennenlernen</h4></div>
+          <fieldset class="confirm-group">
+            <legend>Bitte beachten Sie diese Grundsätze *</legend>
+            <label class="consent"><input type="checkbox" name="09 Grundsätze 1" value="bestätigt" required> <span>Die Patenschaft ist freiwillig. Das Kind darf Treffen ablehnen, unterbrechen oder beenden.</span></label>
+            <label class="consent"><input type="checkbox" name="09 Grundsätze 2" value="bestätigt" required> <span>Eine MEDI-Patin / ein MEDI-Pate spielt, hört zu und begleitet – ohne medizinische oder pflegerische Aufgaben.</span></label>
+            <label class="consent"><input type="checkbox" name="09 Grundsätze 3" value="bestätigt" required> <span>Treffen und zulässige Aktivitäten richten sich nach Klinikvorgaben und dem Befinden des Kindes.</span></label>
+            <label class="consent"><input type="checkbox" name="09 Grundsätze 4" value="bestätigt" required> <span>Das Matching ist keine endgültige Entscheidung. Das persönliche Kennenlernen entscheidet maßgeblich darüber, ob beide Seiten gut zueinander passen.</span></label>
+            <label class="consent"><input type="checkbox" name="09 Grundsätze 5" value="bestätigt" required> <span>Für Datenschutzinformationen, Einwilligung und klinische Freigaben gibt es separate Verfahren.</span></label>
+            <label class="consent"><input type="checkbox" name="09 Grundsätze 6" value="bestätigt" required> <span>Für ein gelungenes Matching geben wir die Angaben aus 02–07 an die Studierenden weiter. 01, 08 und 09 nutzt die Koordination.</span></label>
+          </fieldset>
+          <fieldset class="choice-group cols-1">
+            <legend>Dürfen wir bei gegenseitigem Interesse ein erstes Kennenlernen koordinieren? *</legend>
+            <label class="choice"><input type="radio" name="09 Kennenlernen koordinieren" value="Ja, bitte kontaktieren Sie mich" required> <span>Ja, bitte kontaktieren Sie mich</span></label>
+            <label class="choice"><input type="radio" name="09 Kennenlernen koordinieren" value="Ich habe noch Fragen"> <span>Ich habe noch Fragen</span></label>
+            <label class="choice"><input type="radio" name="09 Kennenlernen koordinieren" value="im Moment nicht"> <span>im Moment nicht</span></label>
+          </fieldset>
+          <div class="field">
+            <label for="k57">Über folgende Nummer / E-Mail sind wir/ich gut erreichbar *</label>
+            <input id="k57" name="09 Kontakt (Nummer oder E-Mail)" type="text" required data-label="Nummer oder E-Mail">
+          </div>
+          <fieldset class="choice-group cols-4">
+            <legend>Erreichbarkeit über die angegebene Nummer <span class="opt">(freiwillig, mehrere möglich)</span></legend>
+            <label class="choice"><input type="checkbox" name="09 Erreichbarkeit" value="WhatsApp"> <span>WhatsApp</span></label>
+            <label class="choice"><input type="checkbox" name="09 Erreichbarkeit" value="Signal"> <span>Signal</span></label>
+            <label class="choice"><input type="checkbox" name="09 Erreichbarkeit" value="SMS"> <span>SMS</span></label>
+            <label class="choice"><input type="checkbox" name="09 Erreichbarkeit" value="iPhone-Messenger"> <span>iPhone-Messenger</span></label>
+          </fieldset>
+          <div class="field">
+            <label for="k58">Anmerkungen / Verbesserungsvorschläge zum Fragebogen <span class="opt">(freiwillig)</span></label>
+            <p class="field-hint">Da wir noch eine sehr junge Initiative sind, sind wir für jeden Verbesserungsvorschlag und jede Kritik offen.</p>
+            <textarea id="k58" name="09 Anmerkungen zum Fragebogen" rows="3"></textarea>
+          </div>
+          <label class="consent">
+            <input type="checkbox" name="Einwilligung Angaben zum Kind" value="erteilt" required>
+            <span>Ich bin sorgeberechtigt und willige ausdrücklich ein, dass MEDIPATEN die Angaben zu meinem Kind – einschließlich der Information, dass es in der genannten Klinik behandelt wird – zur Vermittlung einer Patenschaft verarbeitet und die Angaben aus 02–07 an die vermittelte MEDI-Patin / den vermittelten MEDI-Paten weitergibt. Ich kann diese Einwilligung jederzeit widerrufen. *</span>
+          </label>
+          <label class="consent">
+            <input type="checkbox" name="datenschutz" required>
+            <span>Ich bin einverstanden, dass meine Angaben zur Kontaktaufnahme im Rahmen von MEDIPATEN gespeichert und verarbeitet werden (siehe <a href="datenschutz.html">Datenschutz</a>). *</span>
+          </label>
+        </section>
         <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-        <label class="consent">
-          <input type="checkbox" name="datenschutz" required>
-          <span>Ich bin einverstanden, dass meine Angaben zur Kontaktaufnahme im Rahmen von MEDIPATEN gespeichert und verarbeitet werden. *</span>
-        </label>
-        <button type="submit" class="btn btn-primary btn-lg btn-block">Unverbindlich anfragen</button>
+        <div class="step-nav">
+          <button type="button" class="btn btn-back step-back">Zurück</button>
+          <button type="button" class="btn btn-primary step-next">Weiter</button>
+          <button type="submit" class="btn btn-primary step-submit">Steckbrief absenden</button>
+        </div>
         <p class="form-status" role="status" aria-live="polite"></p>
       </form>
 
