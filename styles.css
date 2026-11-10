@@ -553,6 +553,7 @@ p { margin: 0 0 1em; }
 .section-navy .contact-card .kid-intro { font-size: .97rem; font-weight: 500; color: #7a4a00; background: rgba(255,255,255,.7); border-radius: 14px; padding: 12px 14px; margin: 0 0 18px; }
 /* Navigation */
 .step-nav { display: flex; gap: 12px; margin-top: 8px; }
+.section-navy .contact-card .step-hint { margin: 4px 0 0; font-size: .92rem; color: var(--muted); text-align: center; }
 .step-nav .btn { flex: 1; padding: .95em 1.2em; font-size: 1.02rem; }
 .step-nav .step-back { flex: 0 0 auto; background: #fff; color: var(--navy); border-color: var(--line); }
 .step-nav .step-back:hover { border-color: var(--navy); }
