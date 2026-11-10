@@ -252,6 +252,13 @@
     var progress = form.querySelector(".wizard-progress");
     var back = form.querySelector(".step-back"), next = form.querySelector(".step-next"), submit = form.querySelector('button[type="submit"]');
     var infoOnly = form.querySelector(".info-only");
+    var hint = null;
+    if (form.querySelector('input[name="interesse"]')) {
+      hint = document.createElement("p");
+      hint.className = "step-hint";
+      hint.textContent = "Bitte wählen Sie oben aus, wie wir Ihnen helfen können.";
+      form.querySelector(".step-nav").insertAdjacentElement("beforebegin", hint);
+    }
     function infoMode() {
       var r = form.querySelector('input[name="interesse"]:checked');
       return !!(r && /Informationen/.test(r.value));
@@ -262,9 +269,12 @@
       steps.forEach(function (st, k) { st.hidden = k !== idx; });
       if (infoOnly) infoOnly.hidden = !info;
       var last = idx === steps.length - 1;
+      // Eltern: erst nach der Auswahl „Informationen“ / „Patenschaft“ den passenden Button zeigen
+      var choose = idx === 0 && !!form.querySelector('input[name="interesse"]') && !form.querySelector('input[name="interesse"]:checked');
+      if (hint) hint.hidden = !choose;
       back.hidden = idx === 0;
-      next.hidden = last || info;
-      submit.hidden = !(last || info);
+      next.hidden = last || info || choose;
+      submit.hidden = !(last || info) || choose;
       next.textContent = idx === 0 ? (form.getAttribute("data-first-next") || "Weiter") : "Weiter";
       submit.textContent = info ? form.getAttribute("data-button-info") : form.getAttribute("data-button");
       var total = info ? 1 : steps.length;
@@ -375,7 +385,7 @@
       data._replyto = data.email;
       if (/formsubmit\.co/.test(cfg.FORM_ENDPOINT || "")) { data._template = "table"; data._captcha = "false"; }
       // verständliche Feldnamen für die E-Mail
-      var NAMES = { anliegen: "Anliegen", name: "Name", telefon: "Telefon", klinik: "Klinik / Standort", interesse: "Interesse", datenschutz: "Datenschutz", taetigkeit: "Studiengang oder Beruf", bereich: "Bereich", stadt: "Stadt", uni_klinik: "Uni / Klinik", nachricht: "Nachricht" };
+      var NAMES = { anliegen: "Anliegen", name: "Name", telefon: "Telefon", klinik: "Klinik / Standort", interesse: "Interesse", fragen: "Fragen", datenschutz: "Datenschutz", taetigkeit: "Studiengang oder Beruf", bereich: "Bereich", stadt: "Stadt", uni_klinik: "Uni / Klinik", nachricht: "Nachricht" };
       var out = {};
       Object.keys(data).forEach(function (k) { out[NAMES[k] || k] = data[k]; });
       return out;

@@ -7,7 +7,7 @@
   <meta name="description" content="MEDIPATEN: Medizinstudierende der Universität Witten/Herdecke übernehmen Patenschaften für schwer erkrankte Kinder und Jugendliche im Krankenhaus. Unterstützt von der Children Cancer Foundation.">
   <meta name="theme-color" content="#12305e">
   <link rel="icon" href="assets/img/otter.png">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=20261110">
   <script>document.documentElement.classList.remove("no-js");</script>
 </head>
 <body>
@@ -785,7 +785,7 @@
       <form class="contact-form wizard" id="eltern-form" role="tabpanel" aria-labelledby="tab-eltern" novalidate hidden data-formal
             data-topic="Patenschaft für mein Kind – Steckbrief" data-subject="Neuer Eltern-Steckbrief"
             data-topic-info="Patenschaft für mein Kind – nur Informationen" data-subject-info="Neue Eltern-Anfrage (Informationen)"
-            data-button="Steckbrief absenden" data-button-info="Unverbindlich anfragen" data-first-next="Weiter zum Steckbrief"
+            data-button="Steckbrief absenden" data-button-info="Anfrage abschicken" data-first-next="Weiter zum Steckbrief"
             data-success-title="Vielen Dank für Ihre Anfrage!"
             data-success="Ihre Angaben sind bei uns angekommen. So geht es weiter: Eine Ansprechperson von MEDIPATEN meldet sich persönlich bei Ihnen, beantwortet Ihre Fragen und bespricht mit Ihnen in Ruhe, ob und wie eine Patenschaft für Ihr Kind passen kann.">
         <div class="wizard-progress" aria-live="polite">
@@ -815,10 +815,14 @@
           </div>
           <fieldset class="choice-group interest-choice">
             <legend>Wie können wir Ihnen helfen? *</legend>
-            <label class="choice"><input type="radio" name="interesse" value="Ich möchte erst Informationen" required> <span><strong>Ich möchte erst Informationen</strong><br><small>Wir melden uns bei Ihnen und beantworten Ihre Fragen.</small></span></label>
-            <label class="choice"><input type="radio" name="interesse" value="Ich möchte mein Kind für eine Patenschaft anmelden"> <span><strong>Ich möchte mein Kind für eine Patenschaft anmelden</strong><br><small>Dafür füllen Sie im nächsten Schritt den Steckbrief aus.</small></span></label>
+            <label class="choice"><input type="radio" name="interesse" value="Ich möchte Informationen" required> <span><strong>Ich möchte Informationen</strong><br><small>Sie stellen uns Ihre Fragen, wir melden uns persönlich und unverbindlich bei Ihnen.</small></span></label>
+            <label class="choice"><input type="radio" name="interesse" value="Ich möchte eine Patenschaft für mein Kind"> <span><strong>Ich möchte eine Patenschaft für mein Kind</strong><br><small>Im nächsten Schritt füllen Sie den Steckbrief Ihres Kindes aus.</small></span></label>
           </fieldset>
           <div class="info-only" hidden>
+            <div class="field">
+              <label for="k32">Ihre Fragen <span class="opt">(freiwillig)</span></label>
+              <textarea id="k32" name="fragen" rows="4" placeholder="Was möchten Sie gerne über MEDIPATEN wissen?"></textarea>
+            </div>
             <label class="consent">
               <input type="checkbox" name="datenschutz" required>
               <span>Ich bin einverstanden, dass meine Angaben zur Kontaktaufnahme im Rahmen von MEDIPATEN gespeichert und verarbeitet werden (siehe <a href="datenschutz.html">Datenschutz</a>). *</span>
@@ -1289,7 +1293,7 @@
   <p class="credit">Created by Kjell Patzwahl</p>
 </footer>
 
-<script src="config.js"></script>
-<script src="script.js"></script>
+<script src="config.js?v=20261110"></script>
+<script src="script.js?v=20261110"></script>
 </body>
 </html>
